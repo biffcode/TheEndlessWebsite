@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Adventures - EndlessNovel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #2a2f4f;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .page-title {
+            margin: 30px 0;
+            color: #2a2f4f;
+            text-align: center;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://picsum.photos/1200/600?random=20');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: #ff9d00;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .button {
+            background-color: #2a2f4f;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        .button:hover {
+            background-color: #414677;
+        }
+        
+        .button-primary {
+            background-color: #ff9d00;
+        }
+        
+        .button-primary:hover {
+            background-color: #e08d00;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #2a2f4f;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2a2f4f;
+        }
+        
+        .feature-description {
+            color: #666;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin: 60px 0 30px;
+            color: #2a2f4f;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #666;
+        }
+        
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 40px 0;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .play-button:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        .play-icon {
+            font-size: 2rem;
+        }
+        
+        .how-it-works {
+            margin: 60px 0;
+        }
+        
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            position: relative;
+        }
+        
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #2a2f4f;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2a2f4f;
+        }
+        
+        .step-description {
+            color: #666;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #ddd;
+            z-index: 1;
+        }
+        
+        .testimonials {
+            background-color: #f3f4f6;
+            padding: 60px 0;
+            margin: 60px 0;
+            border-radius: 10px;
+        }
+        
+        .testimonials-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            min-width: 300px;
+            flex: 1;
+        }
+        
+        .testimonial-content {
+            margin-bottom: 20px;
+            color: #555;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .author-name {
+            font-weight: bold;
+        }
+        
+        .author-title {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .faq-section {
+            margin: 60px 0;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+            background-color: #f9f9f9;
+        }
+        
+        .faq-answer.active {
+            padding: 20px;
+            max-height: 200px;
+        }
+        
+        .cta-section {
+            background-color: #2a2f4f;
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            border-radius: 10px;
+            margin: 60px 0;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-subtitle {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .waitlist-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .waitlist-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+        
+        .waitlist-button {
+            background-color: #ff9d00;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #777;
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .progress-line {
+                display: none;
+            }
+            
+            .testimonials-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .waitlist-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .waitlist-input {
+                border-radius: 5px;
+            }
+            
+            .waitlist-button {
+                border-radius: 5px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">EndlessNovel</div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="profile.html">Profile</a>
+                <a href="buy_gems.html">Buy Gems</a>
+                <a href="edit_subscription.html">Subscription</a>
+                <a href="saved_stories.html">Library</a>
+                <a href="share_stories.html">Share</a>
+                <a href="community_forum.html">Community</a>
+                <a href="story_ideas_generator.html">Ideas Generator</a>
+                <a href="writing_challenges.html">Challenges</a>
+                <a href="multiplayer_video.html" class="active">Multiplayer</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="hero-section">
+            <div class="badge">Coming Soon</div>
+            <h1 class="hero-title">Multiplayer Adventure Experience</h1>
+            <p class="hero-subtitle">Embark on epic adventures with friends in real-time. Create stories together, overcome challenges as a team, and experience narrative like never before.</p>
+            <button class="button button-primary">Join the Waitlist</button>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Collaborative Storytelling</h3>
+                <p class="feature-description">Create and experience stories with friends in real-time, with each player contributing to the narrative.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3 class="feature-title">Interactive Decision Making</h3>
+                <p class="feature-description">Vote on story directions, solve puzzles together, and face the consequences of your collective choices.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3 class="feature-title">Character Roleplay</h3>
+                <p class="feature-description">Assume the role of a character in the story with unique abilities, perspectives, and dialogue options.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <h3 class="feature-title">Voice Communication</h3>
+                <p class="feature-description">Talk to your fellow adventurers in real-time with integrated voice chat for a more immersive experience.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3 class="feature-title">Persistent Worlds</h3>
+                <p class="feature-description">Explore expansive story worlds that persist and evolve based on your group's actions and decisions.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3 class="feature-title">Challenges & Rewards</h3>
+                <p class="feature-description">Overcome obstacles, complete quests, and earn unique rewards as a team that can be used in future adventures.</p>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Experience Multiplayer Adventures</h2>
+        <p class="section-subtitle">See how EndlessNovel's multiplayer feature brings friends together for unforgettable story experiences.</p>
+        
+        <div class="video-container">
+            <div class="video-placeholder">
+                <div class="play-button">
+                    <span class="play-icon">▶</span>
+                </div>
+                <p>Click to watch the multiplayer experience demo</p>
+            </div>
+        </div>
+        
+        <div class="how-it-works">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Getting started with multiplayer adventures is easy and intuitive</p>
+            
+            <div class="steps-container">
+                <div class="progress-line"></div>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Create a Room</h3>
+                    <p class="step-description">Start a new multiplayer session and invite friends to join your adventure.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Choose Your Adventure</h3>
+                    <p class="step-description">Select a story theme, setting, or start from scratch with your group.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Assign Roles</h3>
+                    <p class="step-description">Each player chooses or creates a character with unique traits and abilities.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Play Together</h3>
+                    <p class="step-description">Collaborate on the story, make decisions, and experience the adventure as it unfolds.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="testimonials">
+            <h2 class="section-title">What Our Beta Testers Say</h2>
+            
+            <div class="testimonials-container">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"My friends and I spent hours in the multiplayer beta. It's like DnD but so much more accessible! The way the AI adapts to all our choices is mind-blowing."</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Avatar" class="author-avatar">
+                        <div>
+                            <div class="author-name">Sarah Johnson</div>
+                            <div class="author-title">Beta Tester</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"This is revolutionary for long-distance friends. We created a fantasy adventure together despite being in different time zones. The voice chat integration makes it feel like we're in the same room."</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="author-avatar">
+                        <div>
+                            <div class="author-name">Michael Chen</div>
+                            <div class="author-title">Beta Tester</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"As someone who loves storytelling games, this multiplayer feature is exactly what I've been waiting for. The shared decision-making creates such unexpected and exciting story twists!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Avatar" class="author-avatar">
+                        <div>
+                            <div class="author-name">Emily Rodriguez</div>
+                            <div class="author-title">Beta Tester</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>When will multiplayer be available?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        We're planning to launch the multiplayer feature in Q3 2025. Join our waitlist to be notified when it's available and get early access opportunities.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How many players can join a single adventure?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Our current design supports 2-6 players in a single adventure session. This provides the optimal balance between collaborative storytelling and ensuring everyone has a meaningful role.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Will multiplayer require a premium subscription?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Basic multiplayer features will be available to all users. Premium subscribers will have access to enhanced features like longer sessions, more adventure templates, and special character abilities.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can we save our multiplayer stories?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! All multiplayer adventures are saved automatically. Players can revisit them, continue from where they left off, or export them as a narrative to share with others.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What devices will support multiplayer?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Multiplayer will be supported on desktop (Windows, Mac, Linux) and tablet devices at launch. Mobile phone support will follow shortly after the initial release.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <h2 class="cta-title">Be Among the First to Experience Multiplayer</h2>
+            <p class="cta-subtitle">Join our waitlist to receive updates, early access opportunities, and exclusive content as we approach the multiplayer release.</p>
+            
+            <form class="waitlist-form">
+                <input type="email" class="waitlist-input" placeholder="Your email address" required>
+                <button type="submit" class="waitlist-button">Join Waitlist</button>
+            </form>
+        </div>
+    </main>
+    
+    <footer class="footer container">
+        <p>© 2025 EndlessNovel. All rights reserved.</p>
+        <p>Multiplayer feature currently in development. Features and release date subject to change.</p>
+    </footer>
+    
+    <script>
+        // Video Placeholder Functionality
+        const videoPlaceholder = document.querySelector('.video-placeholder');
+        const playButton = document.querySelector('.play-button');
+        
+        playButton.addEventListener('click', () => {
+            // This would typically load a real video
+            alert('In a real implementation, this would play the demo video. For this prototype, we\'re just showing this message.');
+        });
+        
+        // FAQ Toggle Functionality
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const toggle = question.querySelector('.toggle');
+                
+                // Close all other answers first
+                document.querySelectorAll('.faq-answer').forEach(item => {
+                    if (item !== answer && item.classList.contains('active')) {
+                        item.classList.remove('active');
+                        item.previousElementSibling.querySelector('.toggle').textContent = '+';
+                    }
+                });
+                
+                // Toggle the clicked answer
+                answer.classList.toggle('active');
+                toggle.textContent = answer.classList.contains('active') ? '-' : '+';
+            });
+        });
+        
+        // Waitlist Form Submission
+        const waitlistForm = document.querySelector('.waitlist-form');
+        
+        waitlistForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = waitlistForm.querySelector('.waitlist-input').value;
+            
+            // This would typically send the email to a server
+            alert(`Thank you! ${email} has been added to our waitlist. We'll notify you when multiplayer is available.`);
+            waitlistForm.reset();
+        });
+    </script>
+</body>
+</html> 

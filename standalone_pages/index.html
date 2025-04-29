@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EndlessNovel - Standalone Pages</title>
+    <link rel="stylesheet" href="common_styles.css">
+    <style>
+        .page-description {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: var(--text-muted);
+        }
+        
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .page-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .page-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .page-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .page-content {
+            padding: 20px;
+        }
+        
+        .page-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .page-info {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        
+        .view-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 2px solid var(--primary-light);
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px var(--button-shadow);
+        }
+        
+        .view-button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px var(--button-shadow);
+            border-color: rgba(245, 158, 11, 0.8);
+        }
+        
+        .label {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .complete {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .in-progress {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .concept {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--text-muted);
+        }
+        
+        /* Theme Switcher Styles */
+        .theme-switchers {
+            display: flex;
+            gap: 10px;
+            margin-left: 20px;
+        }
+        
+        .theme-switcher {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+        
+        .theme-switcher.active {
+            transform: scale(1.1);
+        }
+        
+        .theme-switcher[data-theme="fantasy"] {
+            background-color: #b45309;
+            border-color: #f59e0b;
+        }
+        
+        .theme-switcher[data-theme="fantasy"].active {
+            box-shadow: 0 0 0 2px #f59e0b;
+        }
+        
+        .theme-switcher[data-theme="scifi"] {
+            background-color: #0891b2;
+            border-color: #06b6d4;
+        }
+        
+        .theme-switcher[data-theme="scifi"].active {
+            box-shadow: 0 0 0 2px #06b6d4;
+        }
+        
+        .theme-switcher[data-theme="real"] {
+            background-color: #059669;
+            border-color: #10b981;
+        }
+        
+        .theme-switcher[data-theme="real"].active {
+            box-shadow: 0 0 0 2px #10b981;
+        }
+    </style>
+</head>
+<body class="fantasy">
+    <header>
+        <div class="container header-content">
+            <div style="display: flex; align-items: center;">
+                <a href="index.html" class="logo">EndlessNovel</a>
+                <div class="theme-switchers">
+                    <div class="theme-switcher" data-theme="fantasy" title="Fantasy Theme"></div>
+                    <div class="theme-switcher" data-theme="scifi" title="Sci-Fi Theme"></div>
+                    <div class="theme-switcher" data-theme="real" title="Realistic Theme"></div>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="profile.html">Profile</a>
+                <a href="buy_gems.html">Buy Gems</a>
+                <a href="edit_subscription.html">Subscription</a>
+                <a href="saved_stories.html">Library</a>
+                <a href="share_stories.html">Share</a>
+                <a href="community_forum.html">Community</a>
+                <a href="story_ideas_generator.html">Ideas Generator</a>
+                <a href="writing_challenges.html">Challenges</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <h1 class="page-title">EndlessNovel Standalone Pages</h1>
+        <p class="page-description">
+            These standalone pages represent different features and functionalities of the EndlessNovel platform. 
+            Each page is a self-contained prototype that demonstrates the user interface and interactions.
+        </p>
+        
+        <div class="pages-grid">
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=1" alt="Profile Page" class="page-image">
+                <div class="page-content">
+                    <span class="label complete">Complete</span>
+                    <h3 class="page-name">User Profile</h3>
+                    <p class="page-info">A profile page where users can view their stories, saved content, and account information.</p>
+                    <a href="profile.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=2" alt="Buy Gems Page" class="page-image">
+                <div class="page-content">
+                    <span class="label complete">Complete</span>
+                    <h3 class="page-name">Buy Gems</h3>
+                    <p class="page-info">A page where users can purchase gems to unlock premium features and enhance their storytelling experience.</p>
+                    <a href="buy_gems.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=3" alt="Edit Subscription Page" class="page-image">
+                <div class="page-content">
+                    <span class="label complete">Complete</span>
+                    <h3 class="page-name">Edit Subscription</h3>
+                    <p class="page-info">A page where users can manage their subscription plans, payment methods, and billing information.</p>
+                    <a href="edit_subscription.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=4" alt="Saved Stories Page" class="page-image">
+                <div class="page-content">
+                    <span class="label complete">Complete</span>
+                    <h3 class="page-name">Saved Stories</h3>
+                    <p class="page-info">A page where users can view, filter, and manage their saved stories from other authors.</p>
+                    <a href="saved_stories.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=5" alt="Share Stories Page" class="page-image">
+                <div class="page-content">
+                    <span class="label complete">Complete</span>
+                    <h3 class="page-name">Share Stories</h3>
+                    <p class="page-info">A page where users can share their stories on social media platforms and get analytics on engagement.</p>
+                    <a href="share_stories.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=6" alt="Multiplayer Video Page" class="page-image">
+                <div class="page-content">
+                    <span class="label concept">Future Concept</span>
+                    <h3 class="page-name">Multiplayer Adventures</h3>
+                    <p class="page-info">A conceptual page showcasing the upcoming multiplayer feature for collaborative storytelling.</p>
+                    <a href="multiplayer_video.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <!-- Community Forum -->
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=7" alt="Community Forum Page" class="page-image">
+                <div class="page-content">
+                    <span class="label complete">Complete</span>
+                    <h3 class="page-name">Community Forum</h3>
+                    <p class="page-info">Connect with other writers, share your work, get feedback, and discuss writing techniques in our community forum.</p>
+                    <a href="community_forum.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <!-- Story Ideas Generator -->
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=8" alt="Story Ideas Generator Page" class="page-image">
+                <div class="page-content">
+                    <span class="label in-progress">In Progress</span>
+                    <h3 class="page-name">Story Ideas Generator</h3>
+                    <p class="page-info">Generate creative story ideas and prompts based on genres, themes, and character archetypes to inspire your writing.</p>
+                    <a href="story_ideas_generator.html" class="view-button">View Page</a>
+                </div>
+            </div>
+            
+            <!-- Writing Challenges -->
+            <div class="page-card">
+                <img src="https://picsum.photos/600/400?random=9" alt="Writing Challenges Page" class="page-image">
+                <div class="page-content">
+                    <span class="label in-progress">In Progress</span>
+                    <h3 class="page-name">Writing Challenges</h3>
+                    <p class="page-info">Participate in daily and weekly writing challenges to improve your skills, earn rewards, and get feedback from the community.</p>
+                    <a href="writing_challenges.html" class="view-button">View Page</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <p>These pages are standalone prototypes and not connected to a backend.</p>
+        <p>© 2025 EndlessNovel. For demonstration purposes only.</p>
+    </footer>
+    
+    <script src="theme-switcher.js"></script>
+</body>
+</html> 
