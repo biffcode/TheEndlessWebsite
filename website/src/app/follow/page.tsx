@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "../ThemeContext";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function Follow() {
   const [email, setEmail] = useState("");
@@ -33,113 +35,8 @@ export default function Follow() {
         <div className={`absolute inset-0 bg-gradient-to-b ${currentSettings.themeColor} opacity-25`} />
       </div>
 
-      {/* Transparent Header */}
-      <header className={`fixed top-0 z-50 w-full py-3 ${currentSettings.navigationBorder} bg-black/20 backdrop-blur-sm transition-all duration-500`}>
-        <div className="container mx-auto px-4 flex items-center justify-between h-16">
-          {/* Left side: Combined theme switcher with instruction */}
-          <div className="flex items-center">
-            {/* Theme logos */}
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setCurrentStyle("fantasy")}
-                className={`transition-all duration-300 rounded-md overflow-hidden ${
-                  currentStyle === 'fantasy' 
-                    ? 'ring-2 ring-amber-400 scale-110' 
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <Image 
-                  src="/images/titlefantasy.png" 
-                  alt="Fantasy Theme" 
-                  width={70} 
-                  height={28} 
-                  className="transition-all duration-300"
-                />
-              </button>
-              <button 
-                onClick={() => setCurrentStyle("scifi")}
-                className={`transition-all duration-300 rounded-md overflow-hidden ${
-                  currentStyle === 'scifi' 
-                    ? 'ring-2 ring-cyan-400 scale-110' 
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <Image 
-                  src="/images/titlescifi.png" 
-                  alt="Sci-Fi Theme" 
-                  width={70} 
-                  height={28} 
-                  className="transition-all duration-300"
-                />
-              </button>
-              <button 
-                onClick={() => setCurrentStyle("real")}
-                className={`transition-all duration-300 rounded-md overflow-hidden ${
-                  currentStyle === 'real' 
-                    ? 'ring-2 ring-emerald-400 scale-110' 
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <Image 
-                  src="/images/titlereal.png" 
-                  alt="Realistic Theme" 
-                  width={70} 
-                  height={28} 
-                  className="transition-all duration-300"
-                />
-              </button>
-            </div>
-            
-            {/* Arrow and instruction */}
-            <div className="flex items-center ml-3">
-              <div className="animate-pulse">
-                <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1L3 10M3 10L12 19M3 10H23" stroke="#FF3333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <span className="ml-2 text-white text-sm">Change style here (try it!)</span>
-            </div>
-          </div>
-          
-          {/* Right side: Navigation */}
-          <nav className={`flex bg-black/30 px-4 py-2 rounded-lg ${currentSettings.navigationFont}`}>
-            <Link 
-              href="/" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect}`}
-            >
-              Home
-            </Link>
-            <Link 
-              href="/about" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect}`}
-            >
-              About
-            </Link>
-            <Link 
-              href="/features" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect}`}
-            >
-              Features
-            </Link>
-            <Link 
-              href="/follow" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${currentSettings.menuActiveIndicator}`}
-            >
-              Follow
-            </Link>
-            <div className="border-l border-white/20 mx-2"></div>
-            <Link 
-              href="/auth" 
-              className={`${currentSettings.buttonColor} text-white px-4 py-1 rounded-md text-sm transition-all hover:scale-105 flex items-center gap-1`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Login / Sign Up</span>
-            </Link>
-          </nav>
-        </div>
-      </header>
+      {/* Header */}
+      <Header />
 
       {/* Content */}
       <section className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 py-8 pt-28 md:pt-32">
@@ -249,100 +146,81 @@ export default function Follow() {
             
             {/* Right Column - Our Community */}
             <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6">
-              <h2 className={`text-2xl font-bold text-white mb-3 ${currentSettings.subtitleFont}`}>Our Community</h2>
-              <p className="text-white/90 mb-4">
-                Join thousands of storytelling enthusiasts, writers, and gamers who are helping shape
-                the future of interactive fiction. Share ideas, give feedback, and be part of our creative process.
+              <h2 className={`text-2xl font-bold text-white mb-4 ${currentSettings.subtitleFont}`}>Our Community</h2>
+              
+              <p className="text-white/90 mb-6">
+                Join thousands of storytelling enthusiasts who are shaping the future of narrative gaming. 
+                Our community is a vibrant ecosystem of creators, adventurers, and dreamers.
               </p>
-              <div className="flex space-x-2 mb-4">
-                <div className="w-10 h-10 rounded-full bg-white/20 overflow-hidden flex items-center justify-center">
-                  <Image 
-                    src="/images/community/community1.jpg"
-                    alt="Community Member" 
-                    width={40} 
-                    height={40}
-                    className="w-full h-full object-cover"
-                  />
+              
+              <div className="space-y-4">
+                <div className="flex items-center bg-black/20 rounded-lg p-3">
+                  <div className="flex-shrink-0 mr-4">
+                    <div className="w-12 h-12 rounded-full bg-amber-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Beta Testing Program</h3>
+                    <p className="text-white/70 text-sm">
+                      Early access to new features and the chance to shape the development of Endless Novel.
+                    </p>
+                  </div>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-white/20 overflow-hidden flex items-center justify-center">
-                  <Image 
-                    src="/images/community/community2.jpg"
-                    alt="Community Member" 
-                    width={40} 
-                    height={40}
-                    className="w-full h-full object-cover"
-                  />
+                
+                <div className="flex items-center bg-black/20 rounded-lg p-3">
+                  <div className="flex-shrink-0 mr-4">
+                    <div className="w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Discord Community</h3>
+                    <p className="text-white/70 text-sm">
+                      Meet fellow storytellers, share your adventures, and get help from our supportive community.
+                    </p>
+                  </div>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-white/20 overflow-hidden flex items-center justify-center">
-                  <Image 
-                    src="/images/community/community3.jpg"
-                    alt="Community Member" 
-                    width={40} 
-                    height={40}
-                    className="w-full h-full object-cover"
-                  />
+                
+                <div className="flex items-center bg-black/20 rounded-lg p-3">
+                  <div className="flex-shrink-0 mr-4">
+                    <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Art Showcase</h3>
+                    <p className="text-white/70 text-sm">
+                      Share the AI-generated art from your adventures and admire the creations of others.
+                    </p>
+                  </div>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-white/20 overflow-hidden flex items-center justify-center">
-                  <Image 
-                    src="/images/community/community4.jpg"
-                    alt="Community Member" 
-                    width={40} 
-                    height={40}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white text-xs">
-                  +2.5k
-                </div>
-              </div>
-              <div className="text-left">
-                <a href="#" className={`inline-block ${currentSettings.buttonColor} text-white px-6 py-2 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} transition-all text-sm`}>
-                  Join Our Discord
-                </a>
               </div>
             </div>
           </div>
           
-          {/* FAQ Section */}
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 mt-8">
-            <h2 className={`text-2xl font-bold text-white mb-6 ${currentSettings.subtitleFont}`}>Frequently Asked Questions</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">When will the platform launch?</h3>
-                <p className="text-white/80">
-                  We're targeting a beta launch in Q3 2023, with full release planned for early 2024.
-                  Subscribers will receive priority access to our closed beta program.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">What platforms will be supported?</h3>
-                <p className="text-white/80">
-                  At launch, we'll support web browsers, iOS, and Android devices.
-                  Desktop applications for Windows and Mac are on our roadmap for release post-launch.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">Will there be a free version?</h3>
-                <p className="text-white/80">
-                  Yes! We'll offer a free tier with access to select stories and features.
-                  Premium subscriptions will unlock unlimited access to all content and advanced features.
-                </p>
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">How can I become a creator?</h3>
-                <p className="text-white/80">
-                  We'll be launching a creator program shortly after our initial release.
-                  Sign up for our newsletter to be notified when creator applications open.
-                </p>
-              </div>
-            </div>
+          {/* Call to Action */}
+          <div className="mt-8 text-center">
+            <Link 
+              href="/auth" 
+              className={`${currentSettings.buttonColor} text-white px-8 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} inline-flex items-center space-x-2 transition-all`}
+            >
+              <span>Join Us Today</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
+      
+      <Footer />
     </main>
   );
 } 

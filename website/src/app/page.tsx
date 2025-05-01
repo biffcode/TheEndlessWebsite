@@ -4,16 +4,20 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "./ThemeContext";
+import { useAuth } from "./context/AuthContext";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const { currentStyle, setCurrentStyle } = useTheme();
+  const { isAuthenticated, user } = useAuth();
   const currentSettings = getStyleSettings(currentStyle);
 
   const keyFeatures = [
     {
       title: "AI-Powered Storytelling",
       description: "Experience endless adventure with our cutting-edge AI narrative engine that adapts to your choices and creates personalized stories.",
-      imagePath: `/images/features/${currentStyle}/memory.jpg`,
+      imagePath: `/images/features/compressed/${currentStyle}-memory.jpg`,
       imageAlt: "AI Storytelling"
     },
     {
@@ -30,7 +34,7 @@ export default function Home() {
     },
     {
       title: "Dynamic Environments",
-      description: "Explore procedurally generated worlds that react to your presence, with AI-crafted visuals that bring your adventure to life.",
+      description: "Explore AI-powered worlds that react to your presence, with AI-crafted visuals that bring your adventure to life.",
       imagePath: `/images/features/${currentStyle}/environments.jpg`,
       imageAlt: "Environment Generation"
     }
@@ -40,121 +44,22 @@ export default function Home() {
     <main className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Hero Background Image */}
       <div className="absolute inset-0 z-0">
-        <div 
-          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
-          style={{ backgroundImage: `url(${currentSettings.bgImage})` }}
-        />
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            src={`/videos/${currentStyle}-hero.webm`}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+          />
+        </div>
         <div className="absolute inset-0 bg-black/30" />
         <div className={`absolute inset-0 bg-gradient-to-b ${currentSettings.themeColor} opacity-25`} />
       </div>
 
-      {/* Transparent Header */}
-      <header className={`fixed top-0 z-50 w-full py-3 ${currentSettings.navigationBorder} bg-black/20 backdrop-blur-sm transition-all duration-500`}>
-        <div className="container mx-auto px-4 flex items-center justify-between h-16">
-          {/* Left side: Combined theme switcher with instruction */}
-          <div className="flex items-center">
-            {/* Theme logos */}
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setCurrentStyle("fantasy")}
-                className={`transition-all duration-300 rounded-md overflow-hidden ${
-                  currentStyle === 'fantasy' 
-                    ? 'ring-2 ring-amber-400 scale-110' 
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <Image 
-                  src="/images/titlefantasy.png" 
-                  alt="Fantasy Theme" 
-                  width={70} 
-                  height={28} 
-                  className="transition-all duration-300"
-                />
-              </button>
-              <button 
-                onClick={() => setCurrentStyle("scifi")}
-                className={`transition-all duration-300 rounded-md overflow-hidden ${
-                  currentStyle === 'scifi' 
-                    ? 'ring-2 ring-cyan-400 scale-110' 
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <Image 
-                  src="/images/titlescifi.png" 
-                  alt="Sci-Fi Theme" 
-                  width={70} 
-                  height={28} 
-                  className="transition-all duration-300"
-                />
-              </button>
-              <button 
-                onClick={() => setCurrentStyle("real")}
-                className={`transition-all duration-300 rounded-md overflow-hidden ${
-                  currentStyle === 'real' 
-                    ? 'ring-2 ring-emerald-400 scale-110' 
-                    : 'opacity-70 hover:opacity-100'
-                }`}
-              >
-                <Image 
-                  src="/images/titlereal.png" 
-                  alt="Realistic Theme" 
-                  width={70} 
-                  height={28} 
-                  className="transition-all duration-300"
-                />
-              </button>
-            </div>
-            
-            {/* Arrow and instruction */}
-            <div className="flex items-center ml-3">
-              <div className="animate-pulse">
-                <svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1L3 10M3 10L12 19M3 10H23" stroke="#FF3333" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <span className="ml-2 text-white text-sm">Change style here (try it!)</span>
-            </div>
-          </div>
-          
-          {/* Right side: Navigation */}
-          <nav className={`flex bg-black/30 px-4 py-2 rounded-lg ${currentSettings.navigationFont}`}>
-            <Link 
-              href="/" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${currentSettings.menuActiveIndicator}`}
-            >
-              Home
-            </Link>
-            <Link 
-              href="/about" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect}`}
-            >
-              About
-            </Link>
-            <Link 
-              href="/features" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect}`}
-            >
-              Features
-            </Link>
-            <Link 
-              href="/follow" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect}`}
-            >
-              Follow
-            </Link>
-            <div className="border-l border-white/20 mx-2"></div>
-            <Link 
-              href="/auth" 
-              className={`${currentSettings.buttonColor} text-white px-4 py-1 rounded-md text-sm transition-all hover:scale-105 flex items-center gap-1`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>Login / Sign Up</span>
-            </Link>
-          </nav>
-        </div>
-      </header>
+      {/* Header */}
+      <Header />
 
       <div className="relative">
         {/* Hero Content */}
@@ -172,19 +77,35 @@ export default function Home() {
             {currentSettings.subtitle}
           </p>
           <div className="mb-20">
-            <a 
-              href="#features" 
-              className={`
-                ${currentSettings.buttonColor} 
-                ${currentSettings.buttonStyle}
-                ${currentSettings.buttonHoverEffect}
-                text-white font-bold py-3 px-10 rounded-full text-lg 
-                transition-all duration-300 transform hover:scale-105
-                inline-block
-              `}
-            >
-              {currentSettings.ctaText}
-            </a>
+            {isAuthenticated ? (
+              <Link 
+                href="/user/library" 
+                className={`
+                  ${currentSettings.buttonColor} 
+                  ${currentSettings.buttonStyle}
+                  ${currentSettings.buttonHoverEffect}
+                  text-white font-bold py-3 px-10 rounded-full text-lg 
+                  transition-all duration-300 transform hover:scale-105
+                  inline-block
+                `}
+              >
+                Go to My Stories
+              </Link>
+            ) : (
+              <a 
+                href="#features" 
+                className={`
+                  ${currentSettings.buttonColor} 
+                  ${currentSettings.buttonStyle}
+                  ${currentSettings.buttonHoverEffect}
+                  text-white font-bold py-3 px-10 rounded-full text-lg 
+                  transition-all duration-300 transform hover:scale-105
+                  inline-block
+                `}
+              >
+                {currentSettings.ctaText}
+              </a>
+            )}
           </div>
           
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
@@ -214,6 +135,9 @@ export default function Home() {
                         alt={feature.imageAlt}
                         fill
                         className="absolute inset-0 object-cover"
+                        priority={index === 0}
+                        quality={90}
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
                     <h3 className={`text-xl font-bold mb-2 ${currentSettings.featureHighlight || "text-white"}`}>{feature.title}</h3>
@@ -295,39 +219,77 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <h2 className={`text-3xl font-bold mb-6 text-white ${currentSettings.subtitleFont}`}>Ready to Begin Your Journey?</h2>
             <p className="text-white/90 text-xl mb-8 max-w-2xl mx-auto">
-              Sign up today and be among the first to experience the next evolution in interactive storytelling.
+              {isAuthenticated 
+                ? `Welcome back, ${user?.name || 'Storyteller'}! Continue your adventure or start a new one.`
+                : 'Sign up today and be among the first to experience the next evolution in interactive storytelling.'
+              }
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/auth" 
-                className={`
-                  ${currentSettings.buttonColor} 
-                  ${currentSettings.buttonStyle}
-                  ${currentSettings.buttonHoverEffect}
-                  text-white font-bold py-3 px-8 rounded-full text-lg 
-                  transition-all duration-300 transform hover:scale-105
-                  inline-block
-                `}
-              >
-                Sign Up Now
-              </Link>
-              <Link 
-                href="/follow" 
-                className={`
-                  bg-black/40
-                  border border-white/30
-                  hover:bg-black/60
-                  text-white font-bold py-3 px-8 rounded-full text-lg 
-                  transition-all duration-300 transform hover:scale-105
-                  inline-block
-                `}
-              >
-                Join Our Community
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link 
+                    href="/user/profile" 
+                    className={`
+                      ${currentSettings.buttonColor} 
+                      ${currentSettings.buttonStyle}
+                      ${currentSettings.buttonHoverEffect}
+                      text-white font-bold py-3 px-8 rounded-full text-lg 
+                      transition-all duration-300 transform hover:scale-105
+                      inline-block
+                    `}
+                  >
+                    Go to Dashboard
+                  </Link>
+                  <Link 
+                    href="/user/library" 
+                    className={`
+                      bg-black/40
+                      border border-white/30
+                      hover:bg-black/60
+                      text-white font-bold py-3 px-8 rounded-full text-lg 
+                      transition-all duration-300 transform hover:scale-105
+                      inline-block
+                    `}
+                  >
+                    My Stories
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/auth" 
+                    className={`
+                      ${currentSettings.buttonColor} 
+                      ${currentSettings.buttonStyle}
+                      ${currentSettings.buttonHoverEffect}
+                      text-white font-bold py-3 px-8 rounded-full text-lg 
+                      transition-all duration-300 transform hover:scale-105
+                      inline-block
+                    `}
+                  >
+                    Sign Up Now
+                  </Link>
+                  <Link 
+                    href="/follow" 
+                    className={`
+                      bg-black/40
+                      border border-white/30
+                      hover:bg-black/60
+                      text-white font-bold py-3 px-8 rounded-full text-lg 
+                      transition-all duration-300 transform hover:scale-105
+                      inline-block
+                    `}
+                  >
+                    Join Our Community
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </section>
       </div>
+
+      <Footer />
     </main>
   );
 }
