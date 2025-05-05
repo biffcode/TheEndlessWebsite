@@ -4,14 +4,19 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "./ThemeContext";
+import { useBackground } from "./context/BackgroundContext";
 import { useAuth } from "./context/AuthContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 export default function Home() {
   const { currentStyle, setCurrentStyle } = useTheme();
+  const { getPageBackground } = useBackground();
   const { isAuthenticated, user } = useAuth();
   const currentSettings = getStyleSettings(currentStyle);
+
+  // Get the background image for this page
+  const pageBackground = getPageBackground('home');
 
   const keyFeatures = [
     {
@@ -45,12 +50,11 @@ export default function Home() {
       {/* Hero Background Image */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 overflow-hidden">
-          <video
-            src={`/videos/${currentStyle}-hero.webm`}
-            autoPlay
-            loop
-            muted
-            playsInline
+          <Image
+            src={pageBackground}
+            alt={`${currentStyle} theme background`}
+            fill
+            priority
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           />
         </div>
@@ -218,72 +222,20 @@ export default function Home() {
         <section className="relative z-10 py-16 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className={`text-3xl font-bold mb-6 text-white ${currentSettings.subtitleFont}`}>Ready to Begin Your Journey?</h2>
-            <p className="text-white/90 text-xl mb-8 max-w-2xl mx-auto">
-              {isAuthenticated 
-                ? `Welcome back, ${user?.name || 'Storyteller'}! Continue your adventure or start a new one.`
-                : 'Sign up today and be among the first to experience the next evolution in interactive storytelling.'
-              }
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {isAuthenticated ? (
-                <>
-                  <Link 
-                    href="/user/profile" 
-                    className={`
-                      ${currentSettings.buttonColor} 
-                      ${currentSettings.buttonStyle}
-                      ${currentSettings.buttonHoverEffect}
-                      text-white font-bold py-3 px-8 rounded-full text-lg 
-                      transition-all duration-300 transform hover:scale-105
-                      inline-block
-                    `}
-                  >
-                    Go to Dashboard
-                  </Link>
-                  <Link 
-                    href="/user/library" 
-                    className={`
-                      bg-black/40
-                      border border-white/30
-                      hover:bg-black/60
-                      text-white font-bold py-3 px-8 rounded-full text-lg 
-                      transition-all duration-300 transform hover:scale-105
-                      inline-block
-                    `}
-                  >
-                    My Stories
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link 
-                    href="/auth" 
-                    className={`
-                      ${currentSettings.buttonColor} 
-                      ${currentSettings.buttonStyle}
-                      ${currentSettings.buttonHoverEffect}
-                      text-white font-bold py-3 px-8 rounded-full text-lg 
-                      transition-all duration-300 transform hover:scale-105
-                      inline-block
-                    `}
-                  >
-                    Sign Up Now
-                  </Link>
-                  <Link 
-                    href="/follow" 
-                    className={`
-                      bg-black/40
-                      border border-white/30
-                      hover:bg-black/60
-                      text-white font-bold py-3 px-8 rounded-full text-lg 
-                      transition-all duration-300 transform hover:scale-105
-                      inline-block
-                    `}
-                  >
-                    Join Our Community
-                  </Link>
-                </>
-              )}
+            <div className="flex justify-center">
+              <Link 
+                href="/follow" 
+                className={`
+                  ${currentSettings.buttonColor} 
+                  ${currentSettings.buttonStyle}
+                  ${currentSettings.buttonHoverEffect}
+                  text-white font-bold py-3 px-10 rounded-full text-lg 
+                  transition-all duration-300 transform hover:scale-105
+                  inline-block
+                `}
+              >
+                Join Our Community
+              </Link>
             </div>
           </div>
         </section>

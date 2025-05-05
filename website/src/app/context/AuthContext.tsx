@@ -30,6 +30,12 @@ export interface User {
   memberSince: string;
   profileImage?: string;  // Optional profile image URL
   bio?: string;  // Optional user biography
+  subscription?: {
+    tier: string;
+    billingCycle: 'monthly' | 'yearly';
+    startDate: string;
+    nextBillingDate: string;
+  };  // Optional subscription info
 }
 
 // Define auth context type
@@ -38,6 +44,9 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   signup: (name: string, email: string, username: string, password: string) => Promise<boolean>;
   logout: () => void;
+  updateGems: (amount: number) => Promise<boolean>;
+  updateUser: (updatedUser: User) => Promise<boolean>;
+  allocateBattlePassGems: () => Promise<boolean>;
   isLoading: boolean;
   error: string | null;
   isAuthenticated: boolean;
@@ -219,12 +228,137 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
+  // Add gems to user account
+  const updateGems = async (amount: number): Promise<boolean> => {
+    if (!user) {
+      setError("User not authenticated");
+      return false;
+    }
+    
+    try {
+      // Simulate a network request
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Update user gems
+      const updatedUser = {
+        ...user,
+        gems: user.gems + amount
+      };
+      
+      // Update state
+      setUser(updatedUser);
+      
+      // Update in localStorage
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      
+      // Also update in registeredUsers if exists
+      const storedUsers = localStorage.getItem('registeredUsers');
+      if (storedUsers) {
+        const users = JSON.parse(storedUsers);
+        const updatedUsers = users.map((u: any) => 
+          u.id === user.id ? { ...u, gems: u.gems + amount } : u
+        );
+        localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+      }
+      
+      return true;
+    } catch (e) {
+      setError("Failed to update gems");
+      console.error("Error updating gems:", e);
+      return false;
+    }
+  };
+
+  // Update user
+  const updateUser = async (updatedUser: User): Promise<boolean> => {
+    if (!user) {
+      setError("User not authenticated");
+      return false;
+    }
+    
+    try {
+      // Update state
+      setUser(updatedUser);
+      
+      // Update in localStorage
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      
+      // Also update in registeredUsers if exists
+      const storedUsers = localStorage.getItem('registeredUsers');
+      if (storedUsers) {
+        const users = JSON.parse(storedUsers);
+        const updatedUsers = users.map((u: any) => 
+          u.id === user.id ? updatedUser : u
+        );
+        localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+      }
+      
+      return true;
+    } catch (e) {
+      setError("Failed to update user");
+      console.error("Error updating user:", e);
+      return false;
+    }
+  };
+
+  // Add Battle Pass gems allocation function
+  const allocateBattlePassGems = async (): Promise<boolean> => {
+    if (!user || !user.subscription) {
+      return false;
+    }
+    
+    try {
+      // Get gems amount based on tier
+      const tierGemAmounts = {
+        'adventurer': 300,
+        'hero': 800,
+        'legend': 1500
+      };
+      
+      const gemsToAdd = tierGemAmounts[user.subscription.tier as keyof typeof tierGemAmounts] || 0;
+      
+      if (gemsToAdd === 0) {
+        return false;
+      }
+      
+      // Update the next billing date
+      const currentBillingDate = new Date(user.subscription.nextBillingDate);
+      const nextBillingDate = new Date(currentBillingDate);
+      
+      if (user.subscription.billingCycle === 'monthly') {
+        nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
+      } else {
+        nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
+      }
+      
+      // Update user with new gems and next billing date
+      const updatedUser = {
+        ...user,
+        gems: user.gems + gemsToAdd,
+        subscription: {
+          ...user.subscription,
+          nextBillingDate: nextBillingDate.toISOString()
+        }
+      };
+      
+      // Update user
+      return await updateUser(updatedUser);
+    } catch (e) {
+      setError("Failed to allocate Battle Pass gems");
+      console.error("Error allocating Battle Pass gems:", e);
+      return false;
+    }
+  };
+
   // Provide the context value
   const contextValue: AuthContextType = {
     user,
     login,
     signup,
     logout,
+    updateGems,
+    updateUser,
+    allocateBattlePassGems,
     isLoading,
     error,
     isAuthenticated: !!user

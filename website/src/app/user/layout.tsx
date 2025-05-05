@@ -44,12 +44,11 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 overflow-hidden">
-          <video
-            src={`/videos/${currentStyle}-hero.webm`}
-            autoPlay
-            loop
-            muted
-            playsInline
+          <Image
+            src={`/good_images/heroimages/${currentStyle}.jpg`}
+            alt={`${currentStyle} theme background`}
+            fill
+            priority
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
           />
         </div>
@@ -119,31 +118,37 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
           <nav className={`flex bg-black/30 px-4 py-2 rounded-lg ${currentSettings.navigationFont}`}>
             <Link 
               href="/" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect}`}
+              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname === '/' ? currentSettings.menuActiveIndicator : ''}`}
             >
               Home
             </Link>
             <Link 
               href="/user/profile" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname.includes('/user/profile') ? currentSettings.menuActiveIndicator : ''}`}
+              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname === '/user/profile' ? currentSettings.menuActiveIndicator : ''}`}
             >
               Profile
             </Link>
             <Link 
-              href="/user/gems" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname.includes('/user/gems') ? currentSettings.menuActiveIndicator : ''}`}
+              href="/user/battle-pass" 
+              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname === '/user/battle-pass' ? currentSettings.menuActiveIndicator : ''}`}
             >
-              Buy Gems
+              Battle Pass
             </Link>
             <Link 
-              href="/user/subscription" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname.includes('/user/subscription') ? currentSettings.menuActiveIndicator : ''}`}
+              href="/user/gems" 
+              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname === '/user/gems' ? currentSettings.menuActiveIndicator : ''}`}
             >
-              Subscription
+              Gems
+            </Link>
+            <Link 
+              href="/user/my-balance" 
+              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname === '/user/gems-detail' || pathname === '/user/my-balance' ? currentSettings.menuActiveIndicator : ''}`}
+            >
+              My Balance
             </Link>
             <Link 
               href="/user/library" 
-              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname.includes('/user/library') ? currentSettings.menuActiveIndicator : ''}`}
+              className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname === '/user/library' ? currentSettings.menuActiveIndicator : ''}`}
             >
               Community
             </Link>

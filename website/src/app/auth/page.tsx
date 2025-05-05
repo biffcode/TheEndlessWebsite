@@ -5,15 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
+import { useTheme, getStyleSettings } from "../ThemeContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-type StyleType = "fantasy" | "scifi" | "real";
 type AuthTab = "login" | "signup";
 
 export default function Auth() {
-  // Theme state management
-  const [currentStyle, setCurrentStyle] = useState<StyleType>("fantasy");
+  // Use the global theme context
+  const { currentStyle } = useTheme();
+  const currentSettings = getStyleSettings(currentStyle);
   const [authTab, setAuthTab] = useState<AuthTab>("login");
   
   // Form state
@@ -31,103 +32,11 @@ export default function Auth() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // First useEffect: Only runs once on mount to load theme from localStorage
-  useEffect(() => {
-    // This code only runs on the client, after hydration
-    const storedTheme = localStorage.getItem("theme") as StyleType | null;
-    if (storedTheme) {
-      setCurrentStyle(storedTheme);
-    }
-  }, []); // Empty dependency array means this only runs once on mount
-  
-  // Second useEffect: Runs when theme changes to save to localStorage
-  useEffect(() => {
-    localStorage.setItem("theme", currentStyle);
-  }, [currentStyle]); // Only runs when currentStyle changes
-
   // Reset error when tab changes
   useEffect(() => {
     setError(null);
   }, [authTab]);
 
-  // Theme settings based on selected style
-  const styleSettings = {
-    fantasy: {
-      title: "Join the Adventure",
-      titleImage: "/images/titlefantasy.png",
-      themeColor: "from-amber-600 to-amber-800",
-      buttonColor: "bg-amber-600 hover:bg-amber-700",
-      buttonStyle: "border-2 border-amber-300 shadow-lg shadow-amber-900/30",
-      buttonHoverEffect: "hover:shadow-amber-500/50 hover:border-amber-200",
-      switcherActiveColor: "bg-gradient-to-r from-amber-700 to-amber-600",
-      switcherHoverColor: "hover:bg-amber-900/40",
-      menuTextColor: "text-amber-200",
-      menuHoverColor: "hover:text-amber-400",
-      bgImage: "/images/fantasy.jpg",
-      subtitleFont: "font-serif italic",
-      navigationFont: "font-serif tracking-wide",
-      navigationBorder: "border-b border-amber-700/30",
-      navigationHoverEffect: "hover:border-b hover:border-amber-400",
-      menuActiveIndicator: "after:content-[''] after:block after:w-full after:h-0.5 after:bg-amber-400 after:mt-0.5",
-      inputBorder: "border-amber-700/50 focus:border-amber-300",
-      inputFocus: "focus:ring-amber-400/30",
-      tabActive: "border-amber-400 text-amber-400",
-      cardBg: "bg-amber-900/30 border border-amber-700/50",
-      socialButton: "bg-amber-700/50 hover:bg-amber-700/70",
-      errorColor: "bg-red-800/50 border-red-700 text-red-200"
-    },
-    scifi: {
-      title: "Access Portal",
-      titleImage: "/images/titlescifi.png",
-      themeColor: "from-cyan-600 to-blue-900",
-      buttonColor: "bg-cyan-600 hover:bg-cyan-700",
-      buttonStyle: "border border-cyan-400 shadow-lg shadow-cyan-900/30",
-      buttonHoverEffect: "hover:shadow-cyan-500/50 hover:border-cyan-300",
-      switcherActiveColor: "bg-gradient-to-r from-blue-600 to-cyan-700",
-      switcherHoverColor: "hover:bg-blue-900/40",
-      menuTextColor: "text-cyan-200",
-      menuHoverColor: "hover:text-cyan-400",
-      bgImage: "/images/scifi.jpg",
-      subtitleFont: "font-mono tracking-wider",
-      navigationFont: "font-mono tracking-widest uppercase text-xs",
-      navigationBorder: "border-b border-blue-700/30",
-      navigationHoverEffect: "hover:border-b hover:border-cyan-400",
-      menuActiveIndicator: "after:content-[''] after:block after:w-full after:h-0.5 after:bg-cyan-400 after:mt-0.5",
-      inputBorder: "border-blue-700/50 focus:border-cyan-300",
-      inputFocus: "focus:ring-cyan-400/30",
-      tabActive: "border-cyan-400 text-cyan-400",
-      cardBg: "bg-blue-900/30 border border-blue-700/50",
-      socialButton: "bg-blue-700/50 hover:bg-blue-700/70",
-      errorColor: "bg-red-800/50 border-red-700 text-red-200"
-    },
-    real: {
-      title: "Account Access",
-      titleImage: "/images/titlereal.png",
-      themeColor: "from-emerald-600 to-emerald-800",
-      buttonColor: "bg-emerald-600 hover:bg-emerald-700",
-      buttonStyle: "border border-emerald-400 shadow-lg shadow-emerald-900/30",
-      buttonHoverEffect: "hover:shadow-emerald-500/50 hover:border-emerald-300",
-      switcherActiveColor: "bg-gradient-to-r from-emerald-700 to-emerald-600",
-      switcherHoverColor: "hover:bg-emerald-800/40",
-      menuTextColor: "text-emerald-200",
-      menuHoverColor: "hover:text-emerald-400",
-      bgImage: "/images/real.jpg",
-      subtitleFont: "font-sans tracking-tight",
-      navigationFont: "font-sans tracking-normal",
-      navigationBorder: "border-b border-emerald-700/30",
-      navigationHoverEffect: "hover:border-b hover:border-emerald-400",
-      menuActiveIndicator: "after:content-[''] after:block after:w-full after:h-0.5 after:bg-emerald-400 after:mt-0.5",
-      inputBorder: "border-emerald-700/50 focus:border-emerald-300",
-      inputFocus: "focus:ring-emerald-400/30",
-      tabActive: "border-emerald-400 text-emerald-400",
-      cardBg: "bg-emerald-900/30 border border-emerald-700/50",
-      socialButton: "bg-emerald-700/50 hover:bg-emerald-700/70",
-      errorColor: "bg-red-800/50 border-red-700 text-red-200"
-    }
-  };
-
-  const currentSettings = styleSettings[currentStyle];
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -236,7 +145,7 @@ export default function Auth() {
                 onClick={() => setAuthTab('login')}
                 className={`flex-1 py-3 font-medium transition-colors border-b-2 ${
                   authTab === 'login' 
-                    ? currentSettings.tabActive
+                    ? `border-${currentStyle === 'fantasy' ? 'amber' : currentStyle === 'scifi' ? 'cyan' : 'emerald'}-400 text-${currentStyle === 'fantasy' ? 'amber' : currentStyle === 'scifi' ? 'cyan' : 'emerald'}-400`
                     : 'border-transparent text-white/70 hover:text-white'
                 }`}
               >
@@ -246,7 +155,7 @@ export default function Auth() {
                 onClick={() => setAuthTab('signup')}
                 className={`flex-1 py-3 font-medium transition-colors border-b-2 ${
                   authTab === 'signup' 
-                    ? currentSettings.tabActive
+                    ? `border-${currentStyle === 'fantasy' ? 'amber' : currentStyle === 'scifi' ? 'cyan' : 'emerald'}-400 text-${currentStyle === 'fantasy' ? 'amber' : currentStyle === 'scifi' ? 'cyan' : 'emerald'}-400`
                     : 'border-transparent text-white/70 hover:text-white'
                 }`}
               >
@@ -258,7 +167,7 @@ export default function Auth() {
             <div className="p-6">
               {/* Error Message */}
               {(error || authError) && (
-                <div className={`p-3 mb-4 rounded-md ${currentSettings.errorColor}`}>
+                <div className="p-3 mb-4 rounded-md bg-red-800/50 border-red-700 text-red-200">
                   {error || authError}
                 </div>
               )}
@@ -375,7 +284,7 @@ export default function Auth() {
               
               <button
                 onClick={handleGoogleAuth}
-                className={`mt-4 w-full ${currentSettings.socialButton} border border-white/10 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-all`}
+                className={`mt-4 w-full ${currentStyle === 'fantasy' ? 'bg-amber-700/50 hover:bg-amber-700/70' : currentStyle === 'scifi' ? 'bg-blue-700/50 hover:bg-blue-700/70' : 'bg-emerald-700/50 hover:bg-emerald-700/70'} border border-white/10 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-all`}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" className="mt-0.5" viewBox="0 0 48 48">
                   <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />

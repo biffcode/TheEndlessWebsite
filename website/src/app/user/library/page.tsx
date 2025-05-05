@@ -37,6 +37,7 @@ export default function CommunityPage() {
   const [filter, setFilter] = useState('all');
   const [ratingFilter, setRatingFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [savedStories, setSavedStories] = useState<Set<string>>(new Set());
   
   // State for storing stories
   const [stories, setStories] = useState<Story[]>([]);
@@ -65,6 +66,65 @@ export default function CommunityPage() {
       case 'XXX': return 'bg-red-500 bg-opacity-20 text-red-300';
       default: return 'bg-gray-500 bg-opacity-20 text-gray-300';
     }
+  };
+
+  // Load saved stories on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined' && user) {
+      const savedStoriesJson = localStorage.getItem(`savedStories_${user.id}`);
+      if (savedStoriesJson) {
+        const stories = JSON.parse(savedStoriesJson);
+        setSavedStories(new Set(stories.map((story: any) => story.id)));
+      }
+    }
+  }, [user]);
+
+  // Function to save/unsave a story
+  const toggleSaveStory = (story: Story) => {
+    if (!user) return;
+
+    const newSavedStories = new Set(savedStories);
+    const savedStoriesJson = localStorage.getItem(`savedStories_${user.id}`);
+    let savedStoriesArray = savedStoriesJson ? JSON.parse(savedStoriesJson) : [];
+
+    if (newSavedStories.has(story.id)) {
+      // Unsave the story
+      newSavedStories.delete(story.id);
+      savedStoriesArray = savedStoriesArray.filter((s: any) => s.id !== story.id);
+    } else {
+      // Save the story
+      newSavedStories.add(story.id);
+      savedStoriesArray.push({
+        id: story.id,
+        title: story.title,
+        author: story.authorName || 'Unknown Author',
+        savedAt: new Date().toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric' 
+        }),
+        progress: 0,
+        coverImage: story.coverImage,
+        description: story.description || story.excerpt,
+        rating: story.rating,
+        genre: story.genre
+      });
+    }
+
+    setSavedStories(newSavedStories);
+    localStorage.setItem(`savedStories_${user.id}`, JSON.stringify(savedStoriesArray));
+
+    // Add activity
+    const existingActivities = JSON.parse(localStorage.getItem(`activities_${user.id}`) || '[]');
+    const newActivity = {
+      type: newSavedStories.has(story.id) ? 'story_saved' : 'story_unsaved',
+      content: newSavedStories.has(story.id) 
+        ? `You saved "${story.title}" by ${story.authorName || 'Unknown Author'} to your library`
+        : `You removed "${story.title}" from your saved stories`,
+      time: 'Just now'
+    };
+    const updatedActivities = [newActivity, ...existingActivities].slice(0, 10);
+    localStorage.setItem(`activities_${user.id}`, JSON.stringify(updatedActivities));
   };
 
   // Load stories from localStorage
@@ -285,222 +345,117 @@ export default function CommunityPage() {
           </div>
         )}
         
-        {/* Grid View */}
-        {!loading && stories.length > 0 && view === 'grid' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredStories.map(story => (
-              <div 
-                key={story.id} 
-                className={`rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 ${
-                  currentStyle === 'fantasy' 
-                    ? 'bg-amber-950/60 border border-amber-800/40' 
-                    : currentStyle === 'scifi' 
-                      ? 'bg-cyan-950/60 border border-cyan-800/40' 
-                      : 'bg-emerald-950/60 border border-emerald-800/40'
-                }`}
-              >
-                <div className="relative h-48 w-full overflow-hidden">
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gray-700" 
-                    style={{ 
-                      backgroundImage: story.coverImage ? `url(${story.coverImage})` : 'none',
-                      filter: 'blur(2px)',
-                      transform: 'scale(1.1)'
-                    }}
-                  ></div>
-                  <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {story.coverImage ? (
-                      <Image 
-                        src={story.coverImage} 
-                        alt={story.title} 
-                        width={180} 
-                        height={240}
-                        className="object-cover h-40 shadow-md"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <div 
-                        className="h-40 w-32 flex items-center justify-center bg-gray-700 shadow-md"
-                      >
-                        <span className="text-gray-300">No Cover</span>
-                      </div>
-                    )}
+        {/* Story Grid/List View */}
+        <div className={`grid ${
+          view === 'grid' 
+            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
+            : 'grid-cols-1 gap-4'
+        }`}>
+          {filteredStories.map(story => (
+            <div 
+              key={story.id}
+              className={`${currentStyle === 'fantasy' 
+                ? 'bg-amber-950/60 border border-amber-800/40' 
+                : currentStyle === 'scifi' 
+                  ? 'bg-cyan-950/60 border border-cyan-800/40' 
+                  : 'bg-emerald-950/60 border border-emerald-800/40'
+              } rounded-lg overflow-hidden transition-transform hover:-translate-y-1`}
+            >
+              {/* Story Cover Image */}
+              <div className="relative h-48 w-full">
+                {story.coverImage ? (
+                  <Image
+                    src={story.coverImage}
+                    alt={story.title}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
                   </div>
+                )}
+                
+                {/* Save Button */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleSaveStory(story);
+                  }}
+                  className="absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+                  title={savedStories.has(story.id) ? "Unsave Story" : "Save Story"}
+                >
+                  {savedStories.has(story.id) ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+
+              {/* Story Content */}
+              <div className="p-4">
+                <h3 className="text-lg font-bold mb-2">{story.title}</h3>
+                <p className="text-sm text-white/80 mb-3">
+                  {story.excerpt?.length > 100 
+                    ? story.excerpt.substring(0, 100) + '...' 
+                    : story.excerpt}
+                </p>
+                
+                {/* Author and Date */}
+                <div className="flex items-center justify-between text-sm text-white/60 mb-3">
+                  <span className="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    {story.authorName || 'Unknown Author'}
+                  </span>
+                  <span>
+                    <svg className="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
+                    </svg>
+                    {story.dateShared ? new Date(story.dateShared).toLocaleDateString() : new Date(story.lastEdited).toLocaleDateString()}
+                  </span>
                 </div>
                 
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-bold truncate text-white">{story.title}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full ${themeColor} text-white`}>
-                      {story.genre}
-                    </span>
-                  </div>
-                  
-                  <p className="text-gray-300 text-sm mb-2">
-                    By {story.authorName || "Unknown Author"}
-                  </p>
-                  
-                  <p className="text-sm mb-4 line-clamp-2 text-gray-400">{story.excerpt || 'No description available'}</p>
-                  
-                  <div className="flex justify-between text-sm mb-4 text-gray-400">
-                    <span>
-                      <svg className="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                      </svg>
-                      {story.likes}
-                    </span>
-                    <span>
-                      <svg className="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                        <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"></path>
-                      </svg>
-                      {story.views}
-                    </span>
-                    <span>
-                      <svg className="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"></path>
-                      </svg>
-                      {story.dateShared ? new Date(story.dateShared).toLocaleDateString() : new Date(story.lastEdited).toLocaleDateString()}
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <span 
-                        className={`px-2 py-1 rounded text-xs ${
-                          story.status === 'completed' ? 'bg-green-500 bg-opacity-20 text-green-300' :
-                          story.status === 'in-progress' ? 'bg-blue-500 bg-opacity-20 text-blue-300' :
-                          'bg-yellow-500 bg-opacity-20 text-yellow-300'
-                        }`}
-                      >
-                        {story.status === 'completed' ? 'Completed' : 
-                        story.status === 'in-progress' ? 'In Progress' : 'Draft'}
-                      </span>
-                      
-                      {story.rating && (
-                        <span className={`px-2 py-1 rounded text-xs ${getRatingColor(story.rating)}`}>
-                          {story.rating}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <Link
-                      href={`/story/read/${story.id}`}
-                      className={`px-3 py-1 rounded-md text-sm transition-colors ${themeColor} ${themeColorHover} text-white`}
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2">
+                    <span 
+                      className={`px-2 py-1 rounded text-xs ${
+                        story.status === 'completed' ? 'bg-green-500 bg-opacity-20 text-green-300' :
+                        story.status === 'in-progress' ? 'bg-blue-500 bg-opacity-20 text-blue-300' :
+                        'bg-yellow-500 bg-opacity-20 text-yellow-300'
+                      }`}
                     >
-                      Read Story
-                    </Link>
+                      {story.status === 'completed' ? 'Completed' : 
+                      story.status === 'in-progress' ? 'In Progress' : 'Draft'}
+                    </span>
+                    
+                    {story.rating && (
+                      <span className={`px-2 py-1 rounded text-xs ${getRatingColor(story.rating)}`}>
+                        {story.rating}
+                      </span>
+                    )}
                   </div>
+                  
+                  <Link
+                    href={`/story/read/${story.id}`}
+                    className={`px-3 py-1 rounded-md text-sm transition-colors ${themeColor} ${themeColorHover} text-white`}
+                  >
+                    Read Story
+                  </Link>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-        
-        {/* List View (simplified) */}
-        {!loading && stories.length > 0 && view === 'list' && (
-          <div className={`overflow-hidden rounded-lg shadow ${
-            currentStyle === 'fantasy' 
-              ? 'bg-amber-950/60' 
-              : currentStyle === 'scifi' 
-                ? 'bg-cyan-950/60' 
-                : 'bg-emerald-950/60'
-          }`}>
-            <table className="min-w-full divide-y divide-gray-700">
-              <thead className="bg-gray-900">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Story
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Author
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Genre
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Stats
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Shared On
-                  </th>
-                  <th scope="col" className="px-6 py-3"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-700">
-                {filteredStories.map((story, idx) => (
-                  <tr key={story.id} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-900'}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10 mr-4">
-                          {story.coverImage ? (
-                            <Image
-                              src={story.coverImage}
-                              alt=""
-                              width={40}
-                              height={40}
-                              className="rounded-md object-cover"
-                            />
-                          ) : (
-                            <div className="h-10 w-10 rounded-md bg-gray-700"></div>
-                          )}
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium text-white">{story.title}</div>
-                          <div className="text-xs truncate max-w-xs text-gray-400">{story.excerpt}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                      {story.authorName || "Unknown Author"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`text-xs px-2 py-1 rounded-full ${themeColor} text-white`}>
-                        {story.genre}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                      <div className="flex space-x-4">
-                        <span>
-                          <svg className="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                          </svg>
-                          {story.likes}
-                        </span>
-                        <span>
-                          <svg className="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                            <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"></path>
-                          </svg>
-                          {story.views}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                      {story.dateShared ? new Date(story.dateShared).toLocaleDateString() : 'Unknown date'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                      <div className="flex items-center gap-2 justify-end">
-                        {story.rating && (
-                          <span className={`px-2 py-1 rounded text-xs ${getRatingColor(story.rating)}`}>
-                            {story.rating}
-                          </span>
-                        )}
-                        <Link
-                          href={`/story/read/${story.id}`}
-                          className={`px-3 py-1 rounded-md text-sm transition-colors ${themeColor} ${themeColorHover} text-white`}
-                        >
-                          Read Story
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
         
         {/* Empty State */}
         {!loading && stories.length === 0 && (
