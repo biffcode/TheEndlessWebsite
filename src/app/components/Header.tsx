@@ -109,6 +109,12 @@ export default function Header() {
           >
             Follow
           </Link>
+          <Link 
+            href="/careers" 
+            className={`${currentSettings.menuTextColor} ${currentSettings.menuHoverColor} transition relative px-3 py-1 ${currentSettings.navigationHoverEffect} ${pathname === '/careers' ? currentSettings.menuActiveIndicator : ''}`}
+          >
+            Careers
+          </Link>
           
           <div className="border-l border-white/20 mx-2"></div>
           

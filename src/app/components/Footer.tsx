@@ -61,6 +61,14 @@ export default function Footer() {
                     Community
                   </Link>
                 </li>
+                <li>
+                  <Link 
+                    href="/careers" 
+                    className={`text-gray-400 hover:${currentSettings.menuTextColor.replace('text-', 'text-')} text-xs transition`}
+                  >
+                    Careers
+                  </Link>
+                </li>
               </ul>
             </div>
             
