@@ -131,6 +131,34 @@ export default function Auth() {
       {/* Header */}
       <Header />
 
+      {/* Coming Soon Overlay */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70 backdrop-blur-md">
+        <div className={`max-w-lg w-full mx-4 p-8 ${currentSettings.cardBg} rounded-xl border border-white/20 text-center`}>
+          <div className="inline-block p-4 mb-4 rounded-full bg-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" className={`h-10 w-10 ${currentSettings.menuTextColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className={`text-3xl font-bold ${currentSettings.menuTextColor} mb-2 ${currentSettings.subtitleFont}`}>
+            Coming Soon
+          </h2>
+          <p className="text-white/90 mb-6">
+            We're working hard to bring you a seamless login experience. 
+            Account functionality will be available in the coming weeks. 
+            In the meantime, follow us to stay updated on our launch!
+          </p>
+          <Link 
+            href="/follow" 
+            className={`inline-flex items-center ${currentSettings.buttonColor} text-white px-8 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} transition-all`}
+          >
+            <span>Follow Our Progress</span>
+            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </Link>
+        </div>
+      </div>
+
       {/* Authentication Form */}
       <section className="relative z-10 flex-1 flex items-center justify-center py-12 px-4 pt-28 md:pt-32">
         <div className="max-w-md w-full">

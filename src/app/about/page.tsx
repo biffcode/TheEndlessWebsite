@@ -4,12 +4,17 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "../ThemeContext";
+import { useBackground } from "../context/BackgroundContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function About() {
   const { currentStyle, setCurrentStyle } = useTheme();
+  const { getPageBackground } = useBackground();
   const currentSettings = getStyleSettings(currentStyle);
+
+  // Get the background image for this page
+  const pageBackground = getPageBackground('about');
 
   return (
     <main className="relative min-h-screen flex flex-col overflow-hidden">
@@ -17,7 +22,7 @@ export default function About() {
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
-          style={{ backgroundImage: `url(${currentSettings.bgImage})` }}
+          style={{ backgroundImage: `url(${pageBackground})` }}
         />
         <div className="absolute inset-0 bg-black/30" />
         <div className={`absolute inset-0 bg-gradient-to-b ${currentSettings.themeColor} opacity-25`} />
@@ -218,7 +223,7 @@ export default function About() {
               <div className="mb-10 relative">
                 <div className={`absolute left-[-28px] top-2 w-4 h-4 ${currentSettings.timelineDot}`}></div>
                 <div className="pl-8">
-                  <h3 className="text-white font-bold text-xl">April 2025 - Website Launch</h3>
+                  <h3 className="text-white font-bold text-xl">May 2025 - Website Launch</h3>
                   <p className="text-white/90 mt-2">
                     Launch of our official website (you're looking at it!) to showcase our vision, introduce our team, and begin building our community. This milestone marks our first public-facing presence.
                   </p>
@@ -228,7 +233,7 @@ export default function About() {
               <div className="relative">
                 <div className={`absolute left-[-28px] top-2 w-4 h-4 ${currentSettings.timelineDot}`}></div>
                 <div className="pl-8">
-                  <h3 className="text-white font-bold text-xl">May 2025 - Early Access on Steam</h3>
+                  <h3 className="text-white font-bold text-xl">July 2025 - Early Access on Steam</h3>
                   <p className="text-white/90 mt-2">
                     Planned release of our Early Access version on Steam, allowing players to experience the first generation of our AI-powered storytelling engine while helping us refine and expand the experience.
                   </p>

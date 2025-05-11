@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useTheme, getStyleSettings } from "../../ThemeContext";
-import { FaGem, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaGem, FaChevronDown, FaChevronUp, FaInfoCircle } from 'react-icons/fa';
 import { useAuth } from "../../context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -67,7 +67,6 @@ const MediaIcon = ({ theme }: { theme: ThemeType }) => {
 export default function GemsPage() {
   const { currentStyle } = useTheme();
   const currentSettings = getStyleSettings(currentStyle);
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const { user, updateGems } = useAuth();
   const [purchaseInProgress, setPurchaseInProgress] = useState<number | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -136,10 +135,6 @@ export default function GemsPage() {
 
   const faqs = [
     {
-      question: "Are gems the same as premium memberships?",
-      answer: "No, there are no premium memberships. Gems are used for content generation, such as AI-powered stories, images, and media."
-    },
-    {
       question: "Do gems expire?",
       answer: "No, your gems never expire. Once purchased, they remain in your account until used."
     },
@@ -171,14 +166,6 @@ export default function GemsPage() {
     }
   };
 
-  const toggleFaq = (index: number) => {
-    if (expandedFaq === index) {
-      setExpandedFaq(null);
-    } else {
-      setExpandedFaq(index);
-    }
-  };
-
   return (
     <div className="max-w-6xl mx-auto">
       {/* Success message */}
@@ -207,14 +194,14 @@ export default function GemsPage() {
       )}
 
       {/* Header Section */}
-      <h1 className={`text-3xl font-bold mb-4 text-white ${currentSettings.subtitleFont}`}>Buy Gems</h1>
+      <h1 className={`text-3xl font-bold mb-4 text-white ${currentSettings.subtitleFont}`}>Gems</h1>
       
       <div className={`${currentSettings.cardBg || "bg-black/30"} backdrop-blur-sm rounded-lg p-6 border border-white/10 mb-8 text-center`}>
         <p className="text-white/70 mb-2">Your Current Balance</p>
-        <div className="flex items-center justify-center gap-2">
-          <FaGem className={`h-10 w-10 ${currentSettings.featureHighlight || 'text-amber-400'}`} />
-          <span className="text-4xl font-bold text-white">{currentBalance}</span>
-          <span className="text-white/70">Gems</span>
+        <div className="flex items-center justify-center gap-3">
+          <FaGem className={`h-12 w-12 ${currentSettings.featureHighlight || 'text-amber-400'}`} />
+          <span className="text-6xl font-bold text-white">{currentBalance}</span>
+          <span className="text-white/70 text-xl">Gems</span>
         </div>
         <p className="text-white/50 text-sm mt-2">Use gems to generate new stories, unlock personalized content, and more.</p>
       </div>
@@ -228,10 +215,10 @@ export default function GemsPage() {
             className={`${currentSettings.cardBg || "bg-black/30"} backdrop-blur-sm rounded-lg p-6 border border-white/10 text-center transition-transform hover:-translate-y-1`}
           >
             <h3 className="text-xl font-bold text-white mb-2">{pkg.title}</h3>
-            <div className="flex items-baseline justify-center gap-1 my-4">
-              <FaGem className={`h-5 w-5 ${currentSettings.featureHighlight || 'text-amber-400'}`} />
-              <span className="text-3xl font-bold text-white">{pkg.amount}</span>
-              <span className="text-white/70">Gems</span>
+            <div className="flex items-baseline justify-center gap-2 my-4">
+              <FaGem className={`h-7 w-7 ${currentSettings.featureHighlight || 'text-amber-400'}`} />
+              <span className="text-5xl font-bold text-white">{pkg.amount}</span>
+              <span className="text-white/70 text-lg">Gems</span>
             </div>
             <p className="text-white/70 text-sm mb-1">for just ${pkg.price.toFixed(2)}</p>
             <p className="text-white/70 text-sm mb-4">{pkg.description}</p>
@@ -311,25 +298,16 @@ export default function GemsPage() {
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <div 
-              key={index} 
-              className={`border border-white/10 rounded-lg overflow-hidden transition-all duration-200 ${expandedFaq === index ? 'bg-white/5' : ''}`}
+              key={index}
+              className="border border-white/10 rounded-lg p-4"
             >
-              <button 
-                onClick={() => toggleFaq(index)} 
-                className="w-full text-left py-4 px-5 flex justify-between items-center"
-              >
-                <h3 className="text-lg font-bold text-white">Q: {faq.question}</h3>
-                <span className={`transition-transform duration-200 ${expandedFaq === index ? 'rotate-180' : ''}`}>
-                  <FaChevronDown className="text-white/70" />
-                </span>
-              </button>
-              <div 
-                className={`px-5 pb-4 text-white/70 text-sm overflow-hidden transition-all duration-300 ${
-                  expandedFaq === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                }`}
-              >
-                <p>A: {faq.answer}</p>
-              </div>
+              <h3 className="text-white font-bold flex items-center gap-2 mb-2">
+                <FaInfoCircle className={`text-${currentStyle === 'fantasy' ? 'amber' : currentStyle === 'scifi' ? 'cyan' : 'emerald'}-400`} />
+                {faq.question}
+              </h3>
+              <p className="text-white/80 text-sm">
+                {faq.answer}
+              </p>
             </div>
           ))}
         </div>

@@ -20,6 +20,7 @@ export default function Careers() {
   });
   
   const [submitted, setSubmitted] = useState(false);
+  const [expandedPosition, setExpandedPosition] = useState<string | null>(null);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -42,24 +43,42 @@ export default function Careers() {
     setSubmitted(true);
   };
   
+  const togglePosition = (positionId: string) => {
+    if (expandedPosition === positionId) {
+      setExpandedPosition(null);
+    } else {
+      setExpandedPosition(positionId);
+      setFormData(prev => ({
+        ...prev,
+        position: positionId
+      }));
+    }
+  };
+  
   const positions = [
     {
       id: "developer",
       title: "Game Developer",
-      description: "Join our team building the future of interactive storytelling. Expertise in Unity or Unreal Engine is preferred.",
-      requirements: ["3+ years of game development experience", "Proficiency in C# or C++", "Experience with Unity or Unreal Engine", "Strong problem-solving skills"]
+      description: "Join our team building the future of interactive storytelling with AI game engines.",
+      requirements: ["Passionate about gaming and AI", "Experience with Python is a plus", "Willing to vibe code", "Self-motivated"]
+    },
+    {
+      id: "promptEngineer",
+      title: "Prompt Engineer",
+      description: "Design and optimize prompts to get the best results from our AI storytelling systems.",
+      requirements: ["Interest in AI models and how they work", "Creative problem-solving skills", "Willing to experiment and iterate", "Self-driven"]
     },
     {
       id: "writer",
       title: "Narrative Designer",
       description: "Create compelling stories and characters that bring our interactive fiction to life.",
-      requirements: ["Experience in narrative design for games", "Strong storytelling abilities", "Understanding of interactive fiction mechanics", "Excellent writing and editing skills"]
+      requirements: ["Passion for storytelling and gaming", "Understanding of narrative structures", "Creative writing abilities", "Interest in AI-driven storytelling"]
     },
     {
       id: "artist",
       title: "UI/UX Designer",
       description: "Design beautiful and intuitive interfaces for our next-generation storytelling platform.",
-      requirements: ["3+ years of UI/UX design experience", "Proficiency with design tools like Figma", "Understanding of game UI best practices", "Portfolio demonstrating strong design skills"]
+      requirements: ["Eye for design and user experience", "Interest in gaming interfaces", "Creative vision", "Ability to work independently"]
     }
   ];
   
@@ -111,6 +130,51 @@ export default function Careers() {
                   <p className="text-white/80">Develop your skills and grow with a company that's redefining digital entertainment.</p>
                 </div>
               </div>
+              
+              <div className="mt-6 p-4 bg-black/20 rounded-lg border border-purple-500/30">
+                <h3 className="text-xl font-bold text-white mb-2">Who We're Looking For</h3>
+                <p className="text-white/80 mb-4">
+                  We're a young team looking for passionate people. No experience required, juniors welcome!
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <div className={`flex items-center justify-center rounded-full w-8 h-8 mr-3 ${currentSettings.buttonColor} bg-opacity-20`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80">Experience with Python is a plus</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex items-center justify-center rounded-full w-8 h-8 mr-3 ${currentSettings.buttonColor} bg-opacity-20`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80">Willing to vibe code</span>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <div className={`flex items-center justify-center rounded-full w-8 h-8 mr-3 ${currentSettings.buttonColor} bg-opacity-20`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80">Passionate about AI</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex items-center justify-center rounded-full w-8 h-8 mr-3 ${currentSettings.buttonColor} bg-opacity-20`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80">Passionate about gaming</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -123,23 +187,41 @@ export default function Careers() {
                 {positions.map(position => (
                   <div 
                     key={position.id}
-                    className={`p-4 rounded-lg cursor-pointer transition-all ${
-                      formData.position === position.id 
+                    className={`p-4 rounded-lg transition-all duration-300 ${
+                      expandedPosition === position.id 
                         ? `${currentSettings.themeColor.replace('from-', 'bg-').replace('to-', '')}/50 border ${currentSettings.inputBorder}` 
                         : 'bg-black/20 hover:bg-black/40'
                     }`}
-                    onClick={() => setFormData(prev => ({ ...prev, position: position.id }))}
                   >
-                    <h3 className="text-xl font-bold text-white">{position.title}</h3>
-                    <p className="text-white/80 text-sm mb-2">{position.description}</p>
+                    <div 
+                      className="flex justify-between items-center cursor-pointer"
+                      onClick={() => togglePosition(position.id)}
+                    >
+                      <h3 className="text-xl font-bold text-white">{position.title}</h3>
+                      <svg 
+                        className={`w-5 h-5 text-white transition-transform duration-300 ${expandedPosition === position.id ? 'transform rotate-180' : ''}`} 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24" 
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
                     
-                    <div className="mt-2">
-                      <span className="text-white/70 text-xs">Requirements:</span>
-                      <ul className="list-disc list-inside text-white/70 text-xs">
-                        {position.requirements.map((req, index) => (
-                          <li key={index}>{req}</li>
-                        ))}
-                      </ul>
+                    <p className="text-white/80 text-sm mt-2">{position.description}</p>
+                    
+                    <div className={`mt-4 overflow-hidden transition-all duration-300 ${
+                      expandedPosition === position.id ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
+                    }`}>
+                      <div className="pt-2 border-t border-white/10">
+                        <span className="text-white/70 text-sm">Requirements:</span>
+                        <ul className="list-disc list-inside text-white/70 text-sm mt-2 space-y-1">
+                          {position.requirements.map((req, index) => (
+                            <li key={index}>{req}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -147,7 +229,7 @@ export default function Careers() {
             </div>
             
             {/* Application Form */}
-            <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6">
+            <div id="application-form" className="bg-black/30 backdrop-blur-sm rounded-lg p-6">
               <h2 className={`text-2xl font-bold text-white mb-4 ${currentSettings.subtitleFont}`}>Apply Now</h2>
               
               {!submitted ? (
@@ -259,69 +341,65 @@ export default function Careers() {
           <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 mb-8">
             <h2 className={`text-2xl font-bold text-white mb-4 ${currentSettings.subtitleFont}`}>Our Culture</h2>
             
+            <p className="text-white/90 mb-6">
+              At our core, we thrive on creativity, innovation, and passion. Here's what makes us unique:
+            </p>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <p className="text-white/90 mb-4">
-                  At Endless Novel, we believe in:
-                </p>
-                
-                <ul className="space-y-2">
+                <ul className="space-y-4">
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Creating an inclusive environment where diverse perspectives thrive</span>
+                    <span className="text-white/90"><span className="font-bold">No HR Department:</span> We believe in self-management and autonomy.</span>
                   </li>
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Balancing innovation with sustainability and work-life harmony</span>
+                    <span className="text-white/90"><span className="font-bold">Work From Home, At Your Own Pace:</span> Flexibility is key.</span>
                   </li>
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Continuous learning and professional development</span>
+                    <span className="text-white/90"><span className="font-bold">Passionate About Gaming and Storytelling:</span> We live and breathe creativity.</span>
                   </li>
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Empowering team members to take ownership and make an impact</span>
+                    <span className="text-white/90"><span className="font-bold">AI Enthusiasts:</span> We're on a mission to turn AI into the ultimate game engine.</span>
                   </li>
                 </ul>
               </div>
               
               <div>
-                <p className="text-white/90 mb-4">
-                  Benefits include:
-                </p>
-                
-                <ul className="space-y-2">
+                <ul className="space-y-4">
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Competitive salary and equity packages</span>
+                    <span className="text-white/90"><span className="font-bold">Pure Meritocracy:</span> Results are what matter; no bureaucracy, no nonsense.</span>
                   </li>
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Flexible remote work options</span>
+                    <span className="text-white/90"><span className="font-bold">Empowerment Through Action:</span> Power belongs to those who build and do.</span>
                   </li>
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Health, dental, and vision insurance</span>
+                    <span className="text-white/90"><span className="font-bold">AI Tools:</span> We provide the resources you need to succeed.</span>
                   </li>
                   <li className="flex items-start">
-                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <svg className={`w-5 h-5 ${currentSettings.menuTextColor} mr-2 mt-1 flex-shrink-0`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    <span className="text-white/90">Professional development budget</span>
+                    <span className="text-white/90"><span className="font-bold">Professional Development:</span> Continuous growth opportunities for passionate learners.</span>
                   </li>
                 </ul>
               </div>

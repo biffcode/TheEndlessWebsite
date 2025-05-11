@@ -4,14 +4,19 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "./ThemeContext";
+import { useBackground } from "./context/BackgroundContext";
 import { useAuth } from "./context/AuthContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 export default function Home() {
   const { currentStyle, setCurrentStyle } = useTheme();
+  const { getPageBackground } = useBackground();
   const { isAuthenticated, user } = useAuth();
   const currentSettings = getStyleSettings(currentStyle);
+
+  // Get the background image for this page
+  const pageBackground = getPageBackground('home');
 
   const keyFeatures = [
     {
@@ -46,7 +51,7 @@ export default function Home() {
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={`/good_images/heroimages/${currentStyle}.jpg`}
+            src={pageBackground}
             alt={`${currentStyle} theme background`}
             fill
             priority

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from './ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import { BackgroundProvider } from './context/BackgroundContext';
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -28,9 +29,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
         <ThemeProvider>
+          <BackgroundProvider>
           <AuthProvider>
             {children}
           </AuthProvider>
+          </BackgroundProvider>
         </ThemeProvider>
       </body>
     </html>

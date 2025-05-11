@@ -4,14 +4,19 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings, StyleType } from "../ThemeContext";
+import { useBackground } from "../context/BackgroundContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-type FeatureId = "memory" | "inventory" | "companionInventory" | "companion" | "minimap" | "environments" | "save" | "genre" | "gamemaster";
+type FeatureId = "memory" | "inventory" | "companionInventory" | "companion" | "minimap" | "environments" | "save" | "genre" | "gamemaster" | "voice" | "soundfx";
 
 export default function Features() {
   const { currentStyle, setCurrentStyle } = useTheme();
+  const { getPageBackground } = useBackground();
   const currentSettings = getStyleSettings(currentStyle);
+
+  // Get the background image for this page
+  const pageBackground = getPageBackground('features');
 
   // Features data
   const features = [
@@ -24,6 +29,16 @@ export default function Features() {
       id: "minimap" as FeatureId,
       title: "Self-Generated Minimap",
       description: "Explore the world with a dynamically generated minimap that tracks your journey and reveals new locations as you discover them, giving you a visual record of your adventure."
+    },
+    {
+      id: "voice" as FeatureId,
+      title: "Voice Generation",
+      description: "Experience immersive storytelling with unique AI-generated voices for each character. Our advanced voice synthesis creates distinctive, emotionally expressive speech that brings your companions and NPCs to life."
+    },
+    {
+      id: "soundfx" as FeatureId,
+      title: "Sound Effect Generation",
+      description: "Enhance your adventure with dynamically generated sound effects that respond to your environment and actions. From magical spells to futuristic technology, every interaction is accompanied by contextually appropriate audio."
     },
     {
       id: "companion" as FeatureId,
@@ -68,7 +83,7 @@ export default function Features() {
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
-          style={{ backgroundImage: `url(${currentSettings.bgImage})` }}
+          style={{ backgroundImage: `url(${pageBackground})` }}
         />
         <div className="absolute inset-0 bg-black/30" />
         <div className={`absolute inset-0 bg-gradient-to-b ${currentSettings.themeColor} opacity-25`} />
@@ -163,144 +178,307 @@ export default function Features() {
           <div className="bg-black/30 backdrop-blur-sm rounded-lg p-6 mb-8">
             <h2 className={`text-2xl font-bold text-white mb-6 ${currentSettings.subtitleFont}`}>Gameplay Mechanics</h2>
             
-            {/* Character Development and World Interaction */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            {/* Character Development and World Interaction - REWORKED */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
               {/* Character Development */}
-              <div className="bg-black/20 rounded-lg p-6">
-                <h3 className={`text-xl font-bold mb-4 ${currentSettings.featureHighlight}`}>Character Development</h3>
-                <p className="text-white/90 mb-4">
-                  Your character and companions evolve throughout the adventure with dynamically tracked statistics, skills, and relationships. The AI remembers injuries, emotional states, and growth opportunities for each character in your party.
-                </p>
-                <div className="bg-black/20 rounded-lg p-4">
-                  <h4 className="text-white font-semibold mb-2">Character Features:</h4>
-                  <ul className="space-y-2 text-white/80">
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Unique AI-generated portraits that reflect character development</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Distinctive voices created through voice synthesis technology</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Individual inventories, abilities, and relationship dynamics</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Persistent memories that influence behavior and dialogue options</span>
-                    </li>
-                  </ul>
+              <div className="bg-black/20 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-lg">
+                <div className="relative h-48 overflow-hidden">
+                  <Image 
+                    src={`/images/sections/gameplay/${currentStyle}/character_development.jpg`}
+                    alt="Character Development"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
+                    <h3 className={`text-xl font-bold p-4 ${currentSettings.featureHighlight}`}>Character Development</h3>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <p className="text-white/90 mb-3">
+                    Your character and companions evolve with dynamic stats, skills, and relationships that respond to your choices.
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">AI-generated portraits</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">Unique voices</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">Custom abilities</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">Persistent memory</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               
               {/* World Interaction */}
-              <div className="bg-black/20 rounded-lg p-6">
-                <h3 className={`text-xl font-bold mb-4 ${currentSettings.featureHighlight}`}>World Interaction</h3>
-                <p className="text-white/90 mb-4">
-                  Our system creates a fully interactive environment where items can be manipulated, locations discovered, and the state of the world persistently tracked through your adventure.
-                </p>
-                <div className="bg-black/20 rounded-lg p-4">
-                  <h4 className="text-white font-semibold mb-2">World Features:</h4>
-                  <ul className="space-y-2 text-white/80">
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Intelligently managed inventory with item transfers between characters</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Procedurally generated maps that expand as you explore</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Location-aware interactions with environmental consequences</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>State-aware AI that can fundamentally alter the game world</span>
-                    </li>
-                  </ul>
+              <div className="bg-black/20 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-lg">
+                <div className="relative h-48 overflow-hidden">
+                  <Image 
+                    src={`/images/sections/gameplay/${currentStyle}/world_interaction.jpg`}
+                    alt="World Interaction"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
+                    <h3 className={`text-xl font-bold p-4 ${currentSettings.featureHighlight}`}>World Interaction</h3>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <p className="text-white/90 mb-3">
+                    Interact with a fully responsive environment where items, locations, and world states persist throughout your adventure.
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">Inventory system</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">Generated maps</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">Environment effects</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-full ${currentSettings.buttonColor} bg-opacity-20 flex items-center justify-center mr-2`}>
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                        </svg>
+                      </div>
+                      <span className="text-white/80 text-sm">Dynamic world states</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             
-            {/* Companion System */}
-            <div className="mb-4">
-              <h3 className={`text-xl font-bold mb-4 ${currentSettings.featureHighlight}`}>Companion System</h3>
-              <p className="text-white/90 mb-6">
-                Your journey becomes richer with a party of unique companions, each offering distinct personalities, abilities, and challenges. Build relationships, unlock their stories, and shape the outcome of your adventure through their dynamic involvement.
-              </p>
+            {/* Companion System - REWORKED */}
+            <div className="mb-8">
+              <div className="bg-black/20 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg mb-6">
+                <div className="relative h-60 overflow-hidden">
+                  <Image 
+                    src={`/images/sections/gameplay/${currentStyle}/companion_system.jpg`}
+                    alt="Companion System"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
+                    <div className="p-6">
+                      <h3 className={`text-xl font-bold mb-2 ${currentSettings.featureHighlight}`}>Companion System</h3>
+                      <p className="text-white/90">
+                        Journey with unique companions who offer distinct personalities, abilities, and storylines that evolve based on your choices.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Companion Features */}
-                <div className="bg-black/20 rounded-lg p-5">
-                  <h4 className="text-white font-semibold mb-3">Companion Features:</h4>
-                  <ul className="space-y-3 text-white/80">
+                <div className="bg-black/20 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-lg">
+                  <div className="p-5">
+                    <div className="flex items-center mb-3">
+                      <div className={`flex-shrink-0 w-10 h-10 rounded-full ${currentSettings.buttonColor} bg-opacity-30 flex items-center justify-center mr-3`}>
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                      </div>
+                      <h4 className="text-white font-semibold">Companion Features</h4>
+                    </div>
+                  <ul className="space-y-2 text-white/80">
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Dynamic Inventories: Equip companions with tailored gear and share party resources</span>
+                        <span>Dynamic inventories and equipment</span>
                     </li>
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Skill Sets and Abilities: Assign specialized skills and unlock powerful abilities</span>
+                        <span>Unique skills and abilities</span>
                     </li>
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Stat Points and Progression: Customize companions by distributing stat points</span>
+                        <span>Customizable progression</span>
                     </li>
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Alignment and Morality: Companions have unique alignments that influence their loyalty</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Rich Backstories: Explore detailed quests tied to each companion's past</span>
+                        <span>Rich backstories with quests</span>
                     </li>
                   </ul>
                 </div>
-                
+              </div>
+              
                 {/* Team Interaction */}
-                <div className="bg-black/20 rounded-lg p-5">
-                  <h4 className="text-white font-semibold mb-3">Team Interaction:</h4>
-                  <p className="text-white/80 mb-3 text-sm">
-                    Interact dynamically with your companions and watch them evolve based on your choices and adventures.
-                  </p>
-                  <ul className="space-y-3 text-white/80">
+                <div className="bg-black/20 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-lg">
+                  <div className="p-5">
+                    <div className="flex items-center mb-3">
+                      <div className={`flex-shrink-0 w-10 h-10 rounded-full ${currentSettings.buttonColor} bg-opacity-30 flex items-center justify-center mr-3`}>
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                      </div>
+                      <h4 className="text-white font-semibold">Team Interaction</h4>
+                    </div>
+                  <ul className="space-y-2 text-white/80">
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Relationship Dynamics: Build bonds through dialogue, decisions, and shared experiences</span>
+                        <span>Build bonds through shared experiences</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                        <span>AI-driven behavior changes</span>
                     </li>
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>AI-Driven Behavior: Companions react to your choices with changing attitudes</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Conflict and Loyalty: Manage rivalries and foster bonds between companions</span>
-                    </li>
-                  </ul>
+                        <span>Manage rivalries and conflicts</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
                 
                 {/* Strategic Party Management */}
-                <div className="bg-black/20 rounded-lg p-5">
-                  <h4 className="text-white font-semibold mb-3">Strategic Party Management:</h4>
-                  <p className="text-white/80 mb-3 text-sm">
-                    Strategically manage your party to overcome challenges and adapt to encounters.
-                  </p>
-                  <ul className="space-y-3 text-white/80">
-                    <li className="flex items-start">
-                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Tactical Combat: Command companions in battles using their unique abilities</span>
+                <div className="bg-black/20 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-lg">
+                  <div className="p-5">
+                    <div className="flex items-center mb-3">
+                      <div className={`flex-shrink-0 w-10 h-10 rounded-full ${currentSettings.buttonColor} bg-opacity-30 flex items-center justify-center mr-3`}>
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                      </div>
+                      <h4 className="text-white font-semibold">Strategic Management</h4>
+                    </div>
+                    <ul className="space-y-2 text-white/80">
+                      <li className="flex items-start">
+                        <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                        <span>Tactical combat command</span>
                     </li>
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Formation and Roles: Arrange your party in formations for strategic advantage</span>
+                        <span>Strategic formations</span>
                     </li>
                     <li className="flex items-start">
                       <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
-                      <span>Companion Risk and Reward: Balance risks with rare opportunities to revive companions</span>
+                        <span>Risk and reward balancing</span>
                     </li>
                   </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Complex Relationship Dynamics */}
+            <div className="mt-8 mb-6">
+              <div className="bg-black/20 rounded-lg overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-0">
+                  <div className="lg:col-span-1 relative">
+                    <div className="h-full lg:h-auto">
+                      <Image 
+                        src={`/images/sections/gameplay/${currentStyle}/relationship_dynamics.jpg`}
+                        alt="Complex Relationships"
+                        fill
+                        className="object-cover h-full w-full"
+                        style={{ objectPosition: 'center' }}
+                      />
+                      <div className="absolute inset-0 bg-black/40 lg:hidden"></div>
+                    </div>
+                  </div>
+                  <div className="p-6 lg:col-span-3">
+                    <h3 className={`text-xl font-bold mb-4 ${currentSettings.featureHighlight}`}>Complex Relationship Dynamics</h3>
+                    <p className="text-white/90 mb-4">
+                      Go beyond simple allies and adversaries with deep, nuanced relationships that have real consequences.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                      <div className="bg-black/30 rounded-lg p-4">
+                        <h4 className={`text-lg font-semibold mb-2 ${currentSettings.featureHighlight}`}>Romance & Rivalry</h4>
+                        <ul className="space-y-2 text-white/80 text-sm">
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Fall in love with companions</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Develop rivalries and conflicts</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Navigate complex relationships</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                      <div className="bg-black/30 rounded-lg p-4">
+                        <h4 className={`text-lg font-semibold mb-2 ${currentSettings.featureHighlight}`}>Life & Death</h4>
+                        <ul className="space-y-2 text-white/80 text-sm">
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Permanent death possibilities</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Execute or sacrifice companions</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Memorial quests for fallen allies</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                      <div className="bg-black/30 rounded-lg p-4">
+                        <h4 className={`text-lg font-semibold mb-2 ${currentSettings.featureHighlight}`}>Loyalty & Betrayal</h4>
+                        <ul className="space-y-2 text-white/80 text-sm">
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Companions may abandon you</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Uncover secret agendas</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className={`mr-2 ${currentSettings.featureHighlight}`}>•</span> 
+                            <span>Earn back lost trust</span>
+                    </li>
+                  </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

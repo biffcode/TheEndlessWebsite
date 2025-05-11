@@ -86,7 +86,9 @@ export const getStyleSettings = (style: StyleType) => {
         environments: "/images/features/fantasy/environments.jpg",
         save: "/images/features/fantasy/save.jpg",
         genre: "/images/features/fantasy/genre.jpg",
-        gamemaster: "/images/features/fantasy/gamemaster.jpg"
+        gamemaster: "/images/features/fantasy/gamemaster.jpg",
+        voice: "/images/features/fantasy/voice.jpg",
+        soundfx: "/images/features/fantasy/soundfx.jpg"
       },
       // About page specific
       visionImage: "/images/vision/fantasy_vision.jpg",
@@ -133,7 +135,9 @@ export const getStyleSettings = (style: StyleType) => {
         environments: "/images/features/scifi/environments.jpg",
         save: "/images/features/scifi/save.jpg",
         genre: "/images/features/scifi/genre.jpg",
-        gamemaster: "/images/features/scifi/gamemaster.jpg"
+        gamemaster: "/images/features/scifi/gamemaster.jpg",
+        voice: "/images/features/scifi/voice.jpg",
+        soundfx: "/images/features/scifi/soundfx.jpg"
       },
       // About page specific
       visionImage: "/images/vision/scifi_vision.jpg",
@@ -180,7 +184,9 @@ export const getStyleSettings = (style: StyleType) => {
         environments: "/images/features/real/environments.jpg",
         save: "/images/features/real/save.jpg",
         genre: "/images/features/real/genre.jpg",
-        gamemaster: "/images/features/real/gamemaster.jpg"
+        gamemaster: "/images/features/real/gamemaster.jpg",
+        voice: "/images/features/real/voice.jpg",
+        soundfx: "/images/features/real/soundfx.jpg"
       },
       // About page specific
       visionImage: "/images/vision/real_vision.jpg",
