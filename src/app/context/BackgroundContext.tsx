@@ -23,7 +23,10 @@ type PageType =
 // Background configuration for each page and theme
 interface BackgroundConfig {
   [key: string]: {
-    [theme in StyleType]: string;
+    [theme in StyleType]: {
+      desktop: string;
+      mobile: string;
+    };
   };
 }
 
@@ -31,80 +34,206 @@ interface BackgroundConfig {
 // Later, you can add page-specific images to the /good_images/page_backgrounds/ directory
 const backgroundConfig: BackgroundConfig = {
   home: {
-    fantasy: '/good_images/page_backgrounds/home_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/home_scifi.jpg',
-    real: '/good_images/page_backgrounds/home_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/home_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/fantasy_mobile.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/home_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/scifi_mobile.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/home_real.jpg',
+      mobile: '/good_images/page_backgrounds/real_mobile.jpg'
+    }
   },
   about: {
-    fantasy: '/good_images/page_backgrounds/about_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/about_scifi.jpg',
-    real: '/good_images/page_backgrounds/about_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/about_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/about_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/about_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/about_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/about_real.jpg',
+      mobile: '/good_images/page_backgrounds/about_real.jpg'
+    }
   },
   features: {
-    fantasy: '/good_images/page_backgrounds/features_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/features_scifi.jpg',
-    real: '/good_images/page_backgrounds/features_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/features_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/features_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/features_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/features_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/features_real.jpg',
+      mobile: '/good_images/page_backgrounds/features_real.jpg'
+    }
   },
   follow: {
-    fantasy: '/good_images/page_backgrounds/follow_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/follow_scifi.jpg',
-    real: '/good_images/page_backgrounds/follow_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/follow_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/follow_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/follow_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/follow_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/follow_real.jpg',
+      mobile: '/good_images/page_backgrounds/follow_real.jpg'
+    }
   },
   auth: {
-    fantasy: '/good_images/page_backgrounds/auth_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/auth_scifi.jpg',
-    real: '/good_images/page_backgrounds/auth_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/auth_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/auth_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/auth_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/auth_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/auth_real.jpg',
+      mobile: '/good_images/page_backgrounds/auth_real.jpg'
+    }
   },
   user: {
-    fantasy: '/good_images/page_backgrounds/user_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/user_scifi.jpg',
-    real: '/good_images/page_backgrounds/user_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/user_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/user_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/user_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/user_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/user_real.jpg',
+      mobile: '/good_images/page_backgrounds/user_real.jpg'
+    }
   },
   community: {
-    fantasy: '/good_images/page_backgrounds/community_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/community_scifi.jpg',
-    real: '/good_images/page_backgrounds/community_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/community_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/community_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/community_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/community_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/community_real.jpg',
+      mobile: '/good_images/page_backgrounds/community_real.jpg'
+    }
   },
   'community-stories': {
-    fantasy: '/good_images/page_backgrounds/community-stories_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/community-stories_scifi.jpg',
-    real: '/good_images/page_backgrounds/community-stories_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/community-stories_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/community-stories_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/community-stories_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/community-stories_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/community-stories_real.jpg',
+      mobile: '/good_images/page_backgrounds/community-stories_real.jpg'
+    }
   },
   contact: {
-    fantasy: '/good_images/page_backgrounds/contact_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/contact_scifi.jpg',
-    real: '/good_images/page_backgrounds/contact_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/contact_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/contact_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/contact_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/contact_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/contact_real.jpg',
+      mobile: '/good_images/page_backgrounds/contact_real.jpg'
+    }
   },
   story: {
-    fantasy: '/good_images/page_backgrounds/story_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/story_scifi.jpg',
-    real: '/good_images/page_backgrounds/story_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/story_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/story_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/story_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/story_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/story_real.jpg',
+      mobile: '/good_images/page_backgrounds/story_real.jpg'
+    }
   },
   careers: {
-    fantasy: '/good_images/page_backgrounds/careers_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/careers_scifi.jpg',
-    real: '/good_images/page_backgrounds/careers_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/careers_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/careers_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/careers_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/careers_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/careers_real.jpg',
+      mobile: '/good_images/page_backgrounds/careers_real.jpg'
+    }
   },
   legal: {
-    fantasy: '/good_images/page_backgrounds/legal_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/legal_scifi.jpg',
-    real: '/good_images/page_backgrounds/legal_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/legal_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/legal_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/legal_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/legal_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/legal_real.jpg',
+      mobile: '/good_images/page_backgrounds/legal_real.jpg'
+    }
   },
   'privacy-policy': {
-    fantasy: '/good_images/page_backgrounds/privacy-policy_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/privacy-policy_scifi.jpg',
-    real: '/good_images/page_backgrounds/privacy-policy_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/privacy-policy_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/privacy-policy_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/privacy-policy_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/privacy-policy_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/privacy-policy_real.jpg',
+      mobile: '/good_images/page_backgrounds/privacy-policy_real.jpg'
+    }
   },
   'terms-of-service': {
-    fantasy: '/good_images/page_backgrounds/terms-of-service_fantasy.jpg',
-    scifi: '/good_images/page_backgrounds/terms-of-service_scifi.jpg',
-    real: '/good_images/page_backgrounds/terms-of-service_real.jpg',
+    fantasy: {
+      desktop: '/good_images/page_backgrounds/terms-of-service_fantasy.jpg',
+      mobile: '/good_images/page_backgrounds/terms-of-service_fantasy.jpg'
+    },
+    scifi: {
+      desktop: '/good_images/page_backgrounds/terms-of-service_scifi.jpg',
+      mobile: '/good_images/page_backgrounds/terms-of-service_scifi.jpg'
+    },
+    real: {
+      desktop: '/good_images/page_backgrounds/terms-of-service_real.jpg',
+      mobile: '/good_images/page_backgrounds/terms-of-service_real.jpg'
+    }
   },
 };
 
 // Create context
 type BackgroundContextType = {
-  getPageBackground: (page: PageType) => string;
+  getPageBackground: (page: PageType) => { desktop: string; mobile: string };
 };
 
 const BackgroundContext = createContext<BackgroundContextType | undefined>(undefined);
@@ -114,13 +243,24 @@ export function BackgroundProvider({ children }: { children: React.ReactNode }) 
   const { currentStyle } = useTheme();
 
   // Function to get background image path based on page and current theme
-  const getPageBackground = (page: PageType): string => {
+  const getPageBackground = (page: PageType): { desktop: string; mobile: string } => {
     try {
       // First try to use page-specific background
-      return backgroundConfig[page]?.[currentStyle] || '/good_images/heroimages/' + currentStyle + '.jpg';
+      if (backgroundConfig[page]?.[currentStyle]) {
+        return backgroundConfig[page][currentStyle];
+      }
+      
+      // Fallback to theme background if the specific page doesn't exist
+      return {
+        desktop: '/good_images/heroimages/' + currentStyle + '.jpg',
+        mobile: '/good_images/heroimages/' + currentStyle + '.jpg'
+      };
     } catch (error) {
       // Fallback to theme background if there's any error
-      return '/good_images/heroimages/' + currentStyle + '.jpg';
+      return {
+        desktop: '/good_images/heroimages/' + currentStyle + '.jpg',
+        mobile: '/good_images/heroimages/' + currentStyle + '.jpg'
+      };
     }
   };
 

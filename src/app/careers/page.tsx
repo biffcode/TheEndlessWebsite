@@ -269,7 +269,7 @@ export default function Careers() {
                     
                     <div>
                       <label htmlFor="resume" className="block text-white mb-2">Resume/CV</label>
-                      <div className="relative flex items-center">
+                      <div className="flex flex-row">
                         <input
                           type="file"
                           id="resume"
@@ -279,23 +279,30 @@ export default function Careers() {
                           required
                           className="sr-only"
                         />
-                        <label 
-                          htmlFor="resume" 
-                          className={`inline-block cursor-pointer px-4 py-2 rounded-md ${currentSettings.buttonColor} text-white ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} transition-all text-sm`}
-                        >
-                          Choose File
-                        </label>
-                        {formData.resume ? (
-                          <span className="ml-3 text-white/80">
-                            {formData.resume.name}
-                          </span>
-                        ) : (
-                          <span className="ml-3 text-yellow-300/90 text-sm italic">
-                            * Please upload your resume (required)
-                          </span>
-                        )}
+                        <div className="flex-shrink-0">
+                          <label 
+                            htmlFor="resume" 
+                            className={`inline-flex items-center justify-center cursor-pointer px-4 py-2 rounded-md ${currentSettings.buttonColor} text-white ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} transition-all text-sm`}
+                          >
+                            Choose File
+                          </label>
+                        </div>
+                        
+                        <div className="ml-3 flex flex-col">
+                          {formData.resume ? (
+                            <span className="text-white/80 text-sm truncate">
+                              {formData.resume.name}
+                            </span>
+                          ) : (
+                            <>
+                              <span className="text-yellow-300/90 text-sm italic">
+                                * Please upload your resume (required)
+                              </span>
+                              <p className="text-white/50 text-xs">Accepted formats: PDF, DOC, DOCX</p>
+                            </>
+                          )}
+                        </div>
                       </div>
-                      <p className="text-white/50 text-xs mt-1">Accepted formats: PDF, DOC, DOCX</p>
                     </div>
                     
                     <div>

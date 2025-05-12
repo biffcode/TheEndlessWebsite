@@ -28,6 +28,11 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
+  touch-action: manipulation;
 }
 
 body[data-theme="fantasy"] {
@@ -52,4 +57,52 @@ body::before {
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
   z-index: -1;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  body {
+    background-position: center top;
+  }
+
+  h1, h2, h3 {
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+/* Improve tap target size on mobile */
+@media (max-width: 768px) {
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Hide Next.js developer popup */
+#__next-build-watcher,
+[data-nextjs-dialog],
+[data-nextjs-codeframe],
+[data-nextjs-terminal],
+[data-nextjs-toast],
+[data-nextjs-route-announcer],
+#__next-route-announcer__,
+#turbopack-dev-server,
+#nextjs-portal,
+.nextjs-toast-errors-parent,
+.nextjs-portal,
+div[role="presentation"][tabindex="-1"],
+#N {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -9999 !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
 }
