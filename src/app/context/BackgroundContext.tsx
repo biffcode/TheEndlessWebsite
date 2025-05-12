@@ -50,43 +50,43 @@ const backgroundConfig: BackgroundConfig = {
   about: {
     fantasy: {
       desktop: '/good_images/page_backgrounds/about_fantasy.jpg',
-      mobile: '/good_images/page_backgrounds/about_fantasy.jpg'
+      mobile: '/good_images/page_backgrounds/fantasy_about.jpg'
     },
     scifi: {
       desktop: '/good_images/page_backgrounds/about_scifi.jpg',
-      mobile: '/good_images/page_backgrounds/about_scifi.jpg'
+      mobile: '/good_images/page_backgrounds/scifi_about.jpg'
     },
     real: {
       desktop: '/good_images/page_backgrounds/about_real.jpg',
-      mobile: '/good_images/page_backgrounds/about_real.jpg'
+      mobile: '/good_images/page_backgrounds/real_about.jpg'
     }
   },
   features: {
     fantasy: {
       desktop: '/good_images/page_backgrounds/features_fantasy.jpg',
-      mobile: '/good_images/page_backgrounds/features_fantasy.jpg'
+      mobile: '/good_images/page_backgrounds/fantasy_features.jpg'
     },
     scifi: {
       desktop: '/good_images/page_backgrounds/features_scifi.jpg',
-      mobile: '/good_images/page_backgrounds/features_scifi.jpg'
+      mobile: '/good_images/page_backgrounds/scifi_features.jpg'
     },
     real: {
       desktop: '/good_images/page_backgrounds/features_real.jpg',
-      mobile: '/good_images/page_backgrounds/features_real.jpg'
+      mobile: '/good_images/page_backgrounds/real_features.jpg'
     }
   },
   follow: {
     fantasy: {
       desktop: '/good_images/page_backgrounds/follow_fantasy.jpg',
-      mobile: '/good_images/page_backgrounds/follow_fantasy.jpg'
+      mobile: '/good_images/page_backgrounds/fantasy_follow.jpg'
     },
     scifi: {
       desktop: '/good_images/page_backgrounds/follow_scifi.jpg',
-      mobile: '/good_images/page_backgrounds/follow_scifi.jpg'
+      mobile: '/good_images/page_backgrounds/scifi_follow.jpg'
     },
     real: {
       desktop: '/good_images/page_backgrounds/follow_real.jpg',
-      mobile: '/good_images/page_backgrounds/follow_real.jpg'
+      mobile: '/good_images/page_backgrounds/real_follow.jpg'
     }
   },
   auth: {

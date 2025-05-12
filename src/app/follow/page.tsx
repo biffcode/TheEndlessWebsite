@@ -34,7 +34,7 @@ export default function Follow() {
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
-          style={{ backgroundImage: `url(${pageBackground})` }}
+          style={{ backgroundImage: `url(${pageBackground.desktop})` }}
         />
         <div className="absolute inset-0 bg-black/30" />
         <div className={`absolute inset-0 bg-gradient-to-b ${currentSettings.themeColor} opacity-25`} />
