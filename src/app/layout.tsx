@@ -21,8 +21,11 @@ export const metadata: Metadata = {
   description: 'Create and continue stories with AI',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png' }
+    ],
+    shortcut: '/favicon.ico',
     apple: '/favicon.png',
   },
 };
@@ -34,6 +37,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
         <ThemeProvider>
           <BackgroundProvider>
