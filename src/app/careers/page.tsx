@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "../ThemeContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { initEmailJS, sendCareerEmail } from '../utils/emailService';
 
 export default function Careers() {
   const { currentStyle, setCurrentStyle } = useTheme();
@@ -22,13 +21,6 @@ export default function Careers() {
   
   const [submitted, setSubmitted] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  
-  // Initialize EmailJS
-  useEffect(() => {
-    initEmailJS();
-  }, []);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -45,28 +37,32 @@ export default function Careers() {
     }));
   };
   
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setError('');
-
-    try {
-      // Send career application using EmailJS
-      console.log("Sending job application to endlessnovel@blackcode.ch:", formData);
+    // In a real application, this would send an email to endlessnovel@blackcode.ch
+    // For demonstration purposes, we're logging the data that would be sent
+    console.log("Application submitted to endlessnovel@blackcode.ch:", formData);
+    
+    // This email submission would typically be handled by a server-side API
+    // Example email content:
+    const emailContent = `
+      New Job Application from ${formData.name}
       
-      const result = await sendCareerEmail(formData);
+      Position: ${selectedPosition?.title || formData.position}
+      Email: ${formData.email}
       
-      if (!result.success) {
-        throw new Error('Failed to send application');
-      }
+      Message:
+      ${formData.message}
       
-      setSubmitted(true);
-    } catch (error) {
-      setError('An error occurred while sending your application. Please try again.');
-      console.error('Error sending application:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+      Resume: ${formData.resume ? formData.resume.name : 'No resume attached'}
+    `;
+    
+    console.log("Email content:", emailContent);
+    
+    // For a production application, you would use a service like SendGrid, AWS SES, or a custom API endpoint
+    // to send the email with the resume attachment.
+    
+    setSubmitted(true);
   };
   
   const togglePosition = (positionId: string) => {
@@ -265,12 +261,6 @@ export default function Careers() {
                   </p>
                   
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    {error && (
-                      <div className="bg-red-500/20 text-red-400 p-3 rounded-md mb-4">
-                        {error}
-                      </div>
-                    )}
-                    
                     <div>
                       <label htmlFor="name" className="block text-white mb-2">Full Name</label>
                       <input
@@ -353,20 +343,9 @@ export default function Careers() {
                     <div className="pt-2">
                       <button 
                         type="submit" 
-                        disabled={isSubmitting}
                         className={`${currentSettings.buttonColor} text-white px-8 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} w-full transition-all`}
                       >
-                        {isSubmitting ? (
-                          <>
-                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Submitting...
-                          </>
-                        ) : (
-                          "Submit Application"
-                        )}
+                        Submit Application
                       </button>
                     </div>
                   </form>

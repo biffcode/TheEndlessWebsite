@@ -41,19 +41,6 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
-        <Script id="emailjs-sdk" strategy="afterInteractive">
-          {`
-            (function(){
-              // Load EmailJS SDK for using with forms
-              if (typeof window !== "undefined") {
-                window.onload = function() {
-                  // This is where EmailJS will be initialized
-                  // The actual initialization happens in the respective components
-                }
-              }
-            })();
-          `}
-        </Script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
         <ThemeProvider>

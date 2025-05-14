@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "../ThemeContext";
 import PageContainer from "../components/PageContainer";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaCheck } from 'react-icons/fa';
-import { initEmailJS, sendContactEmail } from '../utils/emailService';
 
 export default function ContactUsPage() {
   const { currentStyle } = useTheme();
@@ -18,11 +17,6 @@ export default function ContactUsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-
-  // Initialize EmailJS when component mounts
-  useEffect(() => {
-    initEmailJS();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,16 +38,25 @@ export default function ContactUsPage() {
     }
     
     try {
-      // Send email using EmailJS
-      const formData = { name, email, subject, message };
-      console.log("Sending contact form to endlessnovel@blackcode.ch:", formData);
+      // In a real app, this would send data to endlessnovel@blackcode.ch
+      console.log("Contact form submitted to endlessnovel@blackcode.ch:", { name, email, subject, message });
       
-      // Real email sending
-      const result = await sendContactEmail(formData);
+      // This email submission would typically be handled by a server-side API
+      // Example email content:
+      const emailContent = `
+        New Contact Form Submission
+        
+        Name: ${name}
+        Email: ${email}
+        Subject: ${subject}
+        
+        Message:
+        ${message}
+      `;
       
-      if (!result.success) {
-        throw new Error('Failed to send email');
-      }
+      console.log("Email content:", emailContent);
+      
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Success case
       setSubmitted(true);
@@ -63,7 +66,6 @@ export default function ContactUsPage() {
       setMessage('');
     } catch (error) {
       setError('An error occurred while sending your message. Please try again.');
-      console.error('Error sending email:', error);
     } finally {
       setIsSubmitting(false);
     }
