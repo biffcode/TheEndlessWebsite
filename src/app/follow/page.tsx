@@ -1,46 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme, getStyleSettings } from "../ThemeContext";
 import { useBackground } from "../context/BackgroundContext";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { initEmailJS, sendSubscriptionEmail } from '../utils/emailService';
 
 export default function Follow() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
   
   const { currentStyle, setCurrentStyle } = useTheme();
   const { getPageBackground } = useBackground();
   const currentSettings = getStyleSettings(currentStyle);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Initialize EmailJS
+  useEffect(() => {
+    initEmailJS();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (email) {
-      // In a real app, this would send the subscription to endlessnovel@blackcode.ch
-      console.log("Subscribing email to endlessnovel@blackcode.ch:", email);
+    if (!email) {
+      setError('Please enter your email address');
+      return;
+    }
+    
+    if (!email.includes('@') || !email.includes('.')) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setError('');
+    
+    try {
+      // Send subscription email using EmailJS
+      console.log("Sending newsletter subscription to endlessnovel@blackcode.ch:", email);
       
-      // This email submission would typically be handled by a server-side API
-      // Example email content:
-      const emailContent = `
-        New Newsletter Subscription
-        
-        Email: ${email}
-      `;
+      const result = await sendSubscriptionEmail(email);
       
-      console.log("Email content:", emailContent);
+      if (!result.success) {
+        throw new Error('Failed to subscribe');
+      }
       
-      setIsSubmitting(true);
-      
-      // Simulate API call
-      setTimeout(() => {
-        setSubscribed(true);
-        setIsSubmitting(false);
-      }, 1500);
+      setSubscribed(true);
+    } catch (error) {
+      setError('Failed to subscribe. Please try again later.');
+      console.error('Error subscribing:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -79,6 +94,12 @@ export default function Follow() {
                   </p>
                   
                   <form onSubmit={handleSubmit}>
+                    {error && (
+                      <div className="bg-red-500/20 text-red-400 p-3 rounded-md mb-4">
+                        {error}
+                      </div>
+                    )}
+                    
                     <div className="mb-4">
                       <label htmlFor="email" className="block text-white mb-2">Email Address</label>
                       <input
