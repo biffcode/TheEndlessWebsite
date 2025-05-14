@@ -74,13 +74,12 @@ export default function Follow() {
               
               {!subscribed ? (
                 <>
-                  <p className="text-white/90 mb-4">
-                    Join our growing community and be the first to experience the next generation of interactive storytelling.
-                    Subscribe to receive development updates, beta test invitations, and exclusive content.
+                  <p className="text-white/90 mb-6">
+                    Join our growing community and be the first to experience the next generation of interactive storytelling. Subscribe to receive development updates, beta test invitations, and exclusive content.
                   </p>
                   
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
                       <label htmlFor="email" className="block text-white mb-2">Email Address</label>
                       <input
                         type="email"
@@ -89,15 +88,15 @@ export default function Follow() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="your@email.com"
                         required
-                        className={`w-full px-4 py-2 rounded-md bg-black/20 text-white border ${currentSettings.inputBorder} placeholder-white/50 ${currentSettings.inputFocus} focus:ring focus:outline-none transition-all`}
+                        className="w-full px-4 py-2 rounded-md bg-black/20 text-white border border-white/20 placeholder-white/50 focus:outline-none focus:border-white/40 transition-all"
                       />
                     </div>
                     
-                    <div className="pt-2">
+                    <div className="mb-4">
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className={`${currentSettings.buttonColor} text-white px-6 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} transition-all w-full md:w-auto`}
+                        className="bg-orange-500 hover:bg-orange-600 text-white font-medium px-6 py-2 rounded-md transition-all"
                       >
                         {isSubmitting ? (
                           <>
@@ -114,8 +113,7 @@ export default function Follow() {
                     </div>
                     
                     <p className="text-white/70 text-sm">
-                      We respect your privacy and will never share your information.
-                      You can unsubscribe at any time.
+                      We respect your privacy and will never share your information. You can unsubscribe at any time.
                     </p>
                   </form>
                 </>
@@ -133,7 +131,7 @@ export default function Follow() {
                   </p>
                   <button
                     onClick={() => setSubscribed(false)}
-                    className={`${currentSettings.buttonColor} text-white px-8 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} inline-flex items-center space-x-2 transition-all`}
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-medium px-6 py-2 rounded-md transition-all mt-2 inline-flex items-center space-x-2"
                   >
                     <span>Unsubscribe</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
