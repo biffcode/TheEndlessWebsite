@@ -39,7 +39,29 @@ export default function Careers() {
   
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Application submitted:", formData);
+    // In a real application, this would send an email to endlessnovel@blackcode.ch
+    // For demonstration purposes, we're logging the data that would be sent
+    console.log("Application submitted to endlessnovel@blackcode.ch:", formData);
+    
+    // This email submission would typically be handled by a server-side API
+    // Example email content:
+    const emailContent = `
+      New Job Application from ${formData.name}
+      
+      Position: ${selectedPosition?.title || formData.position}
+      Email: ${formData.email}
+      
+      Message:
+      ${formData.message}
+      
+      Resume: ${formData.resume ? formData.resume.name : 'No resume attached'}
+    `;
+    
+    console.log("Email content:", emailContent);
+    
+    // For a production application, you would use a service like SendGrid, AWS SES, or a custom API endpoint
+    // to send the email with the resume attachment.
+    
     setSubmitted(true);
   };
   
@@ -336,8 +358,11 @@ export default function Careers() {
                     </svg>
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Application Submitted!</h3>
-                  <p className="text-white/90">
-                    Thank you for your interest in joining our team. We'll review your application and contact you soon.
+                  <p className="text-white/90 mb-2">
+                    Thank you for your interest in joining our team. Your application has been sent to endlessnovel@blackcode.ch.
+                  </p>
+                  <p className="text-white/70">
+                    We'll review your application and contact you soon.
                   </p>
                 </div>
               )}

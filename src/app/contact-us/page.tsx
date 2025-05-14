@@ -23,22 +23,39 @@ export default function ContactUsPage() {
     setIsSubmitting(true);
     setError('');
     
-    // Validate form
+    // Basic validation
     if (!name.trim() || !email.trim() || !subject.trim() || !message.trim()) {
       setError('Please fill in all fields');
       setIsSubmitting(false);
       return;
     }
     
+    // Email validation
     if (!email.includes('@') || !email.includes('.')) {
       setError('Please enter a valid email address');
       setIsSubmitting(false);
       return;
     }
     
-    // Simulate form submission
     try {
-      // In a real app, this would send data to a backend
+      // In a real app, this would send data to endlessnovel@blackcode.ch
+      console.log("Contact form submitted to endlessnovel@blackcode.ch:", { name, email, subject, message });
+      
+      // This email submission would typically be handled by a server-side API
+      // Example email content:
+      const emailContent = `
+        New Contact Form Submission
+        
+        Name: ${name}
+        Email: ${email}
+        Subject: ${subject}
+        
+        Message:
+        ${message}
+      `;
+      
+      console.log("Email content:", emailContent);
+      
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Success case
@@ -70,8 +87,7 @@ export default function ContactUsPage() {
                   </div>
                   <div>
                     <h3 className="text-white font-medium">Email</h3>
-                    <p className="text-white/70 mt-1">support@endlessnovel.com</p>
-                    <p className="text-white/70">info@endlessnovel.com</p>
+                    <p className="text-white/70 mt-1">endlessnovel@blackcode.ch</p>
                   </div>
                 </div>
                 
@@ -131,8 +147,11 @@ export default function ContactUsPage() {
                     <FaCheck className="h-8 w-8 text-green-400" />
                   </div>
                   <h2 className="text-2xl font-bold text-white mb-2">Message Sent!</h2>
-                  <p className="text-white/70 mb-6">
-                    Thank you for contacting us. We'll get back to you as soon as possible.
+                  <p className="text-white/70 mb-2">
+                    Thank you for contacting us. Your message has been sent to endlessnovel@blackcode.ch.
+                  </p>
+                  <p className="text-white/60 mb-6">
+                    We'll get back to you as soon as possible.
                   </p>
                   <button 
                     onClick={() => setSubmitted(false)}

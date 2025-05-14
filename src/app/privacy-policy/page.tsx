@@ -106,7 +106,7 @@ export default function PrivacyPolicyPage() {
                 If you have any questions about this Privacy Policy, please contact us:
               </p>
               <ul className="list-disc list-inside space-y-2 pl-4">
-                <li>By email: privacy@endlessnovel.com</li>
+                <li>By email: endlessnovel@blackcode.ch</li>
                 <li>By visiting our <Link href="/contact-us" className="text-blue-400 hover:text-blue-300 underline">contact page</Link></li>
               </ul>
             </section>

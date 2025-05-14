@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 export default function Follow() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { currentStyle, setCurrentStyle } = useTheme();
   const { getPageBackground } = useBackground();
@@ -18,10 +19,28 @@ export default function Follow() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (email) {
-      // In a real app, this would send the email to your API
-      console.log("Subscribing email:", email);
-      setSubscribed(true);
+      // In a real app, this would send the subscription to endlessnovel@blackcode.ch
+      console.log("Subscribing email to endlessnovel@blackcode.ch:", email);
+      
+      // This email submission would typically be handled by a server-side API
+      // Example email content:
+      const emailContent = `
+        New Newsletter Subscription
+        
+        Email: ${email}
+      `;
+      
+      console.log("Email content:", emailContent);
+      
+      setIsSubmitting(true);
+      
+      // Simulate API call
+      setTimeout(() => {
+        setSubscribed(true);
+        setIsSubmitting(false);
+      }, 1500);
     }
   };
 
@@ -77,9 +96,20 @@ export default function Follow() {
                     <div className="pt-2">
                       <button 
                         type="submit" 
-                        className={`${currentSettings.buttonColor} text-white px-8 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} w-full transition-all`}
+                        disabled={isSubmitting}
+                        className={`${currentSettings.buttonColor} text-white px-6 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} transition-all w-full md:w-auto`}
                       >
-                        Subscribe Now
+                        {isSubmitting ? (
+                          <>
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Subscribing...
+                          </>
+                        ) : (
+                          "Subscribe"
+                        )}
                       </button>
                     </div>
                     
@@ -90,17 +120,26 @@ export default function Follow() {
                   </form>
                 </>
               ) : (
-                <div className="text-center py-8">
-                  <div className="inline-block rounded-full bg-white/10 p-4 mb-4">
-                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div className="text-center space-y-4">
+                  <div className="inline-block p-3 bg-green-500/20 rounded-full mb-2">
+                    <svg className="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Thank You for Subscribing!</h3>
-                  <p className="text-white/90">
-                    We've sent a confirmation email to your inbox. 
-                    Please check your email to complete the subscription process.
+                  <h3 className="text-2xl font-bold text-white">Subscribed!</h3>
+                  <p className="text-white/70">
+                    You've been subscribed to updates from endlessnovel@blackcode.ch.
+                    Please check your email for a confirmation message.
                   </p>
+                  <button
+                    onClick={() => setSubscribed(false)}
+                    className={`${currentSettings.buttonColor} text-white px-8 py-3 rounded-md ${currentSettings.buttonStyle} ${currentSettings.buttonHoverEffect} inline-flex items-center space-x-2 transition-all`}
+                  >
+                    <span>Unsubscribe</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                  </button>
                 </div>
               )}
             </div>
