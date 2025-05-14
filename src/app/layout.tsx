@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   title: 'EndlessNovel',
   description: 'Create and continue stories with AI',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
